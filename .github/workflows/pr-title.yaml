@@ -10,6 +10,7 @@ on:
 permissions:
   pull-requests: read
   issues: read
+  contents: read
 
 jobs:
   lint:
