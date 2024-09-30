@@ -1,0 +1,48 @@
+name: Release Preview
+
+on:
+  push:
+    tags-ignore:
+      - '**'
+    branches:
+      - 'main'
+    paths-ignore:
+      - 'docs*/**'
+      - '*.md'
+
+concurrency:
+  group: ${{github.workflow}}-${{github.head_ref}}
+  cancel-in-progress: false
+
+env:
+  CI: true
+
+jobs:
+  version:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN_WORKFLOW_PUBLISH }}
+
+      - uses: ./.github/actions/node
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      - run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+        shell: bash
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate next release (dry-run)
+        run: pnpm run release-preview --yes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Show CHANGELOG.md
+        run: echo -e "\`\`\`diff\n$(git --no-pager diff './*/CHANGELOG.md')\n\`\`\`" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,42 @@
+{
+  "name": "@wundergraph/cosmo-schema-loader",
+  "version": "0.0.1",
+  "author": {
+    "name": "WunderGraph Maintainers",
+    "email": "info@wundergraph.com"
+  },
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "url": "https://github.com/wundergraph/apollo-compatibility"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "del dist && tsc"
+  },
+  "dependencies": {
+    "@apollo/composition": "^2.9.2",
+    "@apollo/gateway": "^2.9.2",
+    "@wundergraph/composition": "^0.29.0",
+    "@wundergraph/cosmo-connect": "^0.84.0",
+    "axios": "^1.7.7",
+    "axios-retry": "^4.5.0",
+    "graphql": "^16.9.0",
+    "jwt-decode": "^4.0.0",
+    "minio": "^8.0.1",
+    "pathe": "^1.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
+}

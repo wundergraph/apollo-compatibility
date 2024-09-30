@@ -1,0 +1,3 @@
+packages:
+  - packages/schema-loader
+  - apps/test-server

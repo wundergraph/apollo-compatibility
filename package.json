@@ -1,0 +1,47 @@
+{
+  "name": "apollo-compatibility",
+  "private": true,
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": {
+    "name": "WunderGraph Maintainers",
+    "email": "info@wundergraph.com"
+  },
+  "repository": {
+    "type": "https",
+    "url": "https://github.com/wundergraph/apollo-compatibility"
+  },
+  "homepage": "https://wundergraph.com",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,mdx,yml,yaml,css,json,graphql,gql}": [
+      "prettier --write"
+    ]
+  },
+  "scripts": {
+    "build": "pnpm -r run build",
+    "test": "pnpm run -r --parallel test",
+    "husky": "husky install",
+    "lint:fix": "pnpm run -r --parallel lint:fix",
+    "clean": "del-cli '**/node_modules/' '**/**/dist/' '**/**/gen/' '**/**/.next' '**/**/tsconfig.tsbuildinfo' '**/**/.eslintcache'",
+    "release-preview": "lerna publish --ignore-scripts --dry-run",
+    "release": "lerna publish -y"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "19.2.1",
+    "@commitlint/config-conventional": "19.1.0",
+    "@lerna-lite/cli": "3.3.1",
+    "@lerna-lite/publish": "3.7.1",
+    "@lerna-lite/version": "3.7.1",
+    "del-cli": "^5.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^12.5.0",
+    "prettier": "^3.0.3",
+    "vitest": "^2.0.3"
+  }
+}
