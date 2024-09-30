@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "esnext",
-    "lib": ["esnext"],
+    "target": "ES2022",
+    "lib": ["es2022"],
     "sourceMap": true,
     "outDir": "./dist",
     "module": "ESNext"
