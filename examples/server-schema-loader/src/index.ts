@@ -7,10 +7,10 @@ import { SchemaLoader } from '@wundergraph/cosmo-schema-loader';
 dotenv.config();
 
 const cosmoSchemaLoader = new SchemaLoader({
-  filePath: process.env.COSMO_EXECUTION_CONFIG_PATH,
+  filePath: process.env.EXECUTION_CONFIG_PATH,
   // cdn: {
-  //   endpoint: process.env.COSMO_CDN_URL,
-  //   token: process.env.COSMO_TOKEN,
+  //   endpoint: process.env.CDN_URL,
+  //   token: process.env.TOKEN,
   // },
   // s3: {
   //   endpoint: process.env.S3_ENDPOINT,
