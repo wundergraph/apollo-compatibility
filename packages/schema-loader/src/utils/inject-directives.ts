@@ -5,31 +5,17 @@ export const injectDirectives = (schema: string) => {
   const { normalizationResult } = normalizeSubgraphFromString(schema, true);
   const isV2Graph = normalizationResult?.isVersionTwo || false;
 
-  const linkDirective = `extend schema
-  @link(
-    url: "https://specs.apollo.dev/federation/v2.5"
-    import: [
-      "@authenticated"
-      "@composeDirective"
-      "@extends"
-      "@external"
-      "@inaccessible"
-      "@interfaceObject"
-      "@override"
-      "@provides"
-      "@key"
-      "@requires"
-      "@requiresScopes"
-      "@shareable"
-      "@tag"
-    ]
-  )
-`;
   let hasDefinedLink = false;
   if (!isV2Graph) {
     return schema;
   }
+
+  const usedDirectives = new Set<string>();
+
   visit(parse(schema), {
+    Directive(node) {
+      usedDirectives.add(node.name.value);
+    },
     SchemaDefinition: {
       enter(node) {
         if (!node.directives) {
@@ -61,7 +47,43 @@ export const injectDirectives = (schema: string) => {
   });
 
   if (!hasDefinedLink) {
+    const alwaysImportDirectives = [
+      '@composeDirective',
+      '@extends',
+      '@external',
+      '@inaccessible',
+      '@interfaceObject',
+      '@override',
+      '@provides',
+      '@key',
+      '@requires',
+      '@shareable',
+      '@tag',
+    ];
+
+    const conditionallyImportDirectives = [];
+
+    if (usedDirectives.has('authenticated')) {
+      conditionallyImportDirectives.push('@authenticated');
+    }
+
+    if (usedDirectives.has('requiresScopes')) {
+      conditionallyImportDirectives.push('@requiresScopes');
+    }
+
+    const importDirectives = [...alwaysImportDirectives, ...conditionallyImportDirectives];
+
+    const linkDirective = `extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.5"
+    import: [
+      ${importDirectives.map((dir) => `"${dir}"`).join('\n      ')}
+    ]
+  )
+`;
+
     return linkDirective + schema;
   }
+
   return schema;
 };
