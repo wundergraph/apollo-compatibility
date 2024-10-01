@@ -1,0 +1,18 @@
+{
+  "name": "subgraph-users",
+  "version": "1.1.46",
+  "description": "",
+  "main": "users.js",
+  "scripts": {
+    "start": "node users.js"
+  },
+  "dependencies": {
+    "@apollo/subgraph": "0.6.1",
+    "apollo-server": "3.13.0",
+    "supergraph-demo-opentelemetry": "0.2.4",
+    "graphql": "16.8.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

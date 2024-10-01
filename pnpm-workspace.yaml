@@ -1,0 +1,3 @@
+packages:
+  - packages/schema-loader
+  - examples/server-schema-loader

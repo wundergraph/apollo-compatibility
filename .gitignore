@@ -1,0 +1,14 @@
+node_modules
+.husky
+.idea
+.vscode
+**/*.env
+**/*.env.*
+!**/*.env.example
+# docker volumes
+**/_docker
+tsconfig.tsbuildinfo
+#lerna
+lerna-debug.log
+.DS_Store
+dist

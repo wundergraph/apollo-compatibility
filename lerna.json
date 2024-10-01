@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/@lerna-lite/cli/schemas/lerna-schema.json",
+  "version": "independent",
+  "command": {
+    "publish": {
+      "registry": "https://registry.npmjs.org"
+    },
+    "version": {
+      "conventionalCommits": true,
+      "createRelease": "github",
+      "syncWorkspaceLock": true,
+      "changelogIncludeCommitsClientLogin": " (@%l)",
+      "message": "chore(release): Publish [skip ci]",
+      "changelogHeaderMessage": "Binaries are attached to the github release otherwise all images can be found [here](https://github.com/orgs/wundergraph/packages?repo_name=apollo-compatibility)"
+    }
+  },
+  "packages": ["packages/schema-loader"],
+  "npmClient": "pnpm",
+  "loglevel": "verbose"
+}
