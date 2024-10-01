@@ -79,21 +79,25 @@ export const pollCDN = async (
   let latestConfigVersion = '';
 
   const t = setInterval(async () => {
-    const result = await getSDL(httpClient, configURL, config, latestConfigVersion);
+    try {
+      const result = await getSDL(httpClient, configURL, config, latestConfigVersion);
 
-    if (!result) {
-      return;
+      if (!result) {
+        return;
+      }
+
+      latestConfigVersion = result.configVersion;
+      await opts.healthCheck(result.supergraphSdl);
+      opts.update(result.supergraphSdl);
+    } catch (e) {
+      console.error('Failed to update supergraph sdl', e);
     }
-
-    latestConfigVersion = result.configVersion;
-    await opts.healthCheck(result.supergraphSdl);
-    opts.update(result.supergraphSdl);
   }, pollInterval);
 
   const result = await getSDL(httpClient, configURL, config, latestConfigVersion);
 
   if (!result) {
-    process.exit(0);
+    throw new Error('Failed to get supergraph SDL');
   }
 
   latestConfigVersion = result.configVersion;

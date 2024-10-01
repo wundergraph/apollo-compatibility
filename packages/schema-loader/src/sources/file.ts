@@ -30,7 +30,7 @@ export const watchConfigFile = async (path: string, opts: SupergraphSdlHookOptio
   const parsed = parseConfig(config);
 
   if (!parsed) {
-    process.exit(0);
+    throw new Error('Failed to parse config');
   }
 
   return {

@@ -31,23 +31,27 @@ export const pollS3 = async (
   let lastModifiedTimestamp = 0;
 
   const t = setInterval(async () => {
-    const stat = await client.statObject(s3Config.bucketName, s3Config.objectPath);
-    if (stat.lastModified.getTime() === lastModifiedTimestamp) {
-      return;
+    try {
+      const stat = await client.statObject(s3Config.bucketName, s3Config.objectPath);
+      if (stat.lastModified.getTime() === lastModifiedTimestamp) {
+        return;
+      }
+
+      const objectStream = await client.getObject(s3Config.bucketName, s3Config.objectPath);
+      const configContent = await streamToString(objectStream);
+
+      const parsed = parseConfig(configContent);
+      if (!parsed) {
+        return;
+      }
+
+      console.log('New config detected');
+      lastModifiedTimestamp = stat.lastModified.getTime();
+      await opts.healthCheck(parsed.supergraphSdl);
+      opts.update(parsed.supergraphSdl);
+    } catch (e) {
+      console.error('Failed to retrieve config', e);
     }
-
-    const objectStream = await client.getObject(s3Config.bucketName, s3Config.objectPath);
-    const configContent = await streamToString(objectStream);
-
-    const parsed = parseConfig(configContent);
-    if (!parsed) {
-      return;
-    }
-
-    console.log('New config detected');
-    lastModifiedTimestamp = stat.lastModified.getTime();
-    await opts.healthCheck(parsed.supergraphSdl);
-    opts.update(parsed.supergraphSdl);
   }, pollInterval);
 
   const stat = await client.statObject(s3Config.bucketName, s3Config.objectPath);
@@ -58,7 +62,7 @@ export const pollS3 = async (
 
   const parsed = parseConfig(configContent);
   if (!parsed) {
-    process.exit(0);
+    throw new Error('Failed to get supergraph SDL');
   }
 
   return {

@@ -14,8 +14,7 @@ export class SchemaLoader {
     }
 
     if (!this.options.cdn && !this.options.filePath && !this.options.s3) {
-      console.log('One of cdn, filepath or s3 must be provided.');
-      process.exit(0);
+      throw new Error('One of cdn, filepath or s3 must be provided.');
     }
 
     if (this.options.cdn && !this.options.cdn.endpoint) {
