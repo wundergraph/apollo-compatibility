@@ -12,6 +12,14 @@
   "repository": {
     "url": "https://github.com/wundergraph/apollo-compatibility"
   },
+  "keywords": [
+    "wundergraph",
+    "cosmo",
+    "gateway",
+    "apollo",
+    "federation",
+    "graphql"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
