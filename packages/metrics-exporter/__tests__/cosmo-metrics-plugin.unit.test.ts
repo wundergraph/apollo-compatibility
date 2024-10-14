@@ -8,11 +8,11 @@ import {type CosmoClient} from '../src/plugin/cosmo-client';
 import {
   ArgumentUsageInfo,
   InputUsageInfo,
-  type SchemaUsageInfoAggregation,
+  SchemaUsageInfoAggregation,
   TypeFieldUsageInfo,
 } from '../src/generated/graphqlmetrics/v1/graphqlmetrics_pb';
 
-// Simpe schema def that covers test needs
+// Simple schema def that covers test needs
 const typeDefs = `#graphql
   type Query {
     me: User

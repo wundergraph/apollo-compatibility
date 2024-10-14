@@ -1,20 +1,23 @@
 {
-  "preset": "ts-jest/presets/default-esm",
-  "extensionsToTreatAsEsm": [".ts"],
-  "moduleNameMapper": {
-    "^(\\.{1,2}/.*)\\.js$": "$1"
-  },
-  "transform": {
-    "^.+\\.ts$": [
-      "ts-jest",
-      {
-        "useESM": true,
-        "tsconfig": "<rootDir>/tsconfig.json",
-        "isolatedModules": true
-      }
-    ]
-  },
-  "testMatch": ["**/*.test.ts"],
-  "setupFiles": ["<rootDir>/.jest/setup.js"],
-  "prettierPath": "<rootDir>/../../node_modules/prettier-2/index.js"
-}
+    "testEnvironment": "node",
+    "preset": "ts-jest",
+    "testMatch": [
+      "**/*.unit.test.ts"
+    ],
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "src /**/*.ts",
+      "!src /**/*.d.ts"
+    ],
+    "modulePathIgnorePatterns": [
+      "dist"
+    ],
+    "testPathIgnorePatterns": [
+      "./__tests__/setup.ts"
+    ],
+    "prettierPath": "<rootDir>/node_modules/prettier-2/index.js",
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    }
+  }
+  
