@@ -47,14 +47,6 @@ SchemaLoaderOptions {
 }
 ```
 
-## File
-
-The plugin watches for any config file changes for the provided path and updates the sdl accordingly.
-
-```ts
-filePath: string
-```
-
 ## CDN
 
 Poll the CDN for config file. The default interval is 15 seconds.
@@ -72,6 +64,49 @@ interface CDNOptions {
 `token`: The token for your Federated Graph. You can generate one with the [token create command](https://cosmo-docs.wundergraph.com/cli/router/token/create).
 
 `signatureKey`: The optional signature key is the one used to sign your config in your admission server.
+
+### Usage with Cosmo Cloud
+
+Once you have a token generated using `wgc router token create your_graph_name`, you can use it in your environment file (`.env`) as shown below. This fetches from cosmo cloud as the default. Feel free to specify a `signatureKey` if you have configured admission.
+
+```ts
+import dotenv from 'dotenv';
+import { ApolloGateway } from '@apollo/gateway';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
+import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
+
+dotenv.config();
+
+// Fetches from Cosmo Cloud CDN by default
+const cosmoSchemaLoader = new SchemaLoader({
+  cdn: {
+    // Token for your federated graph on cosmo. 
+    token: process.env.GRAPH_TOKEN,
+  },
+  pollInterval: 3000,
+});
+
+const gateway = new ApolloGateway({
+  supergraphSdl: cosmoSchemaLoader.supergraphSdl,
+});
+
+const server = new ApolloServer({
+  gateway,
+});
+
+startStandaloneServer(server).then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});
+```
+
+## File
+
+The plugin watches for any config file changes for the provided path and updates the sdl accordingly.
+
+```ts
+filePath: string
+```
 
 ## S3
 

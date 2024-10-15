@@ -20,7 +20,7 @@ npm i @wundergraph/cosmo-to-apollo-schema
 
 The **Schema Loader** is an Apollo Gateway plugin that enables seamless integration of your subgraphs from Cosmo's execution configuration. It helps compose the subgraphs into a Supergraph SDL, simplifying the transition to Cosmo.
 
-Once you have the token, you can use it in your environment file (`.env`) as shown in the [full example](/packages/schema-loader-cdn). The following code snippet demonstrates how easy it is to integrate the Schema Loader into your Apollo Gateway setup:
+Once you have the token, you can use it in your environment file (`.env`) as shown in the [full example](/examples/schema-loader-cdn). The following code snippet demonstrates how easy it is to integrate the Schema Loader into your Apollo Gateway setup:
 
 ```ts
 import dotenv from 'dotenv';
