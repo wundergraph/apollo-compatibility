@@ -25,10 +25,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GH_PAT_TOKEN }}
 
       - uses: ./.github/actions/node
         with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
+          working-directory: ${{ env.GH_PAT_TOKEN }}
 
       - run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
         shell: bash
