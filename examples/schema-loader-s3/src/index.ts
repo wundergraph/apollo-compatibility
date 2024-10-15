@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { ApolloGateway } from '@apollo/gateway';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { SchemaLoader } from '@wundergraph/cosmo-schema-loader';
+import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
 
 dotenv.config();
 

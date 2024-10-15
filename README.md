@@ -4,7 +4,7 @@ This repository provides a collection of useful plugins and packages to help fac
 
 ##  Packages
 
-### 1. [Schema Loader](/packages/schema-loader)
+### 1. [Cosmo to Apollo Schema Loader](/packages/cosmo-to-apollo-schema)
  
 An Apollo Gateway plugin/helper that helps you to import your subgraphs directly from your Cosmo execution config and compose it into a supergraph sdl.
 
@@ -23,7 +23,7 @@ wgc router token create your_graph_name
 2. Install and configure the schema loader for your apollo gateway
 
 ```bash
-npm i @wundergraph/cosmo-schema-loader
+npm i @wundergraph/cosmo-to-apollo-schema
 ```
 
 ```ts
@@ -31,7 +31,7 @@ import dotenv from 'dotenv';
 import { ApolloGateway } from '@apollo/gateway';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { SchemaLoader } from '@wundergraph/cosmo-schema-loader';
+import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
 
 dotenv.config();
 

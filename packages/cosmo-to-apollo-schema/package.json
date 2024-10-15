@@ -1,5 +1,5 @@
 {
-  "name": "@wundergraph/cosmo-schema-loader",
+  "name": "@wundergraph/cosmo-to-apollo-schema",
   "description": "An apollo gateway plugin/helper to import schema from cosmo execution config",
   "version": "0.0.1",
   "author": {

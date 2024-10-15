@@ -1,0 +1,191 @@
+{
+  "engineConfig": {
+    "defaultFlushInterval": "500",
+    "datasourceConfigurations": [
+      {
+        "kind": "GRAPHQL",
+        "rootNodes": [{ "typeName": "Query", "fieldNames": ["allPandas", "panda"] }],
+        "childNodes": [{ "typeName": "Panda", "fieldNames": ["name", "favoriteFood"] }],
+        "overrideFieldPathFromAlias": true,
+        "customGraphql": {
+          "fetch": {
+            "url": { "staticVariableContent": "http://localhost:4002/graphql" },
+            "method": "POST",
+            "body": {},
+            "baseUrl": {},
+            "path": {}
+          },
+          "subscription": {
+            "enabled": true,
+            "url": { "staticVariableContent": "http://localhost:4002/graphql" },
+            "protocol": "GRAPHQL_SUBSCRIPTION_PROTOCOL_WS",
+            "websocketSubprotocol": "GRAPHQL_WEBSOCKET_SUBPROTOCOL_AUTO"
+          },
+          "federation": {
+            "enabled": true,
+            "serviceSdl": "type Query {\n  allPandas: [Panda]\n  panda(name: ID!): Panda\n}\n\ntype Panda {\n    name:ID!\n    favoriteFood: String\n}\n"
+          },
+          "upstreamSchema": { "key": "6cfc16e8e6fabdc40cd4856299d2af30b5ee78e3" }
+        },
+        "requestTimeoutSeconds": "10",
+        "id": "726bc6b6-bbbe-40f4-b017-9a01c9accb61"
+      },
+      {
+        "kind": "GRAPHQL",
+        "rootNodes": [
+          { "typeName": "Product", "fieldNames": ["id", "sku", "package", "variation", "dimensions", "createdBy"] },
+          { "typeName": "Query", "fieldNames": ["allProducts", "product"] },
+          { "typeName": "User", "fieldNames": ["email"], "externalFieldNames": ["email", "totalProductsCreated"] }
+        ],
+        "childNodes": [
+          { "typeName": "ProductVariation", "fieldNames": ["id"] },
+          { "typeName": "ProductDimension", "fieldNames": ["size", "weight"] }
+        ],
+        "overrideFieldPathFromAlias": true,
+        "customGraphql": {
+          "fetch": {
+            "url": { "staticVariableContent": "http://localhost:4003/graphql" },
+            "method": "POST",
+            "body": {},
+            "baseUrl": {},
+            "path": {}
+          },
+          "subscription": {
+            "enabled": true,
+            "url": { "staticVariableContent": "http://localhost:4003/graphql" },
+            "protocol": "GRAPHQL_SUBSCRIPTION_PROTOCOL_WS",
+            "websocketSubprotocol": "GRAPHQL_WEBSOCKET_SUBPROTOCOL_AUTO"
+          },
+          "federation": {
+            "enabled": true,
+            "serviceSdl": "directive @tag(name: String!) repeatable on FIELD_DEFINITION\n\ntype Product @key(fields: \"id\") @key(fields: \"sku package\") @key(fields: \"sku variation { id }\"){\n  id: ID! @tag(name: \"hi-from-products\")\n  sku: String @tag(name: \"hi-from-products\")\n  package: String\n  variation: ProductVariation\n  dimensions: ProductDimension\n  createdBy: User @provides(fields: \"totalProductsCreated\")\n}\n\ntype ProductVariation {\n  id: ID!\n}\n\ntype ProductDimension {\n  size: String\n  weight: Float\n}\n\nextend type Query {\n  allProducts: [Product]\n  product(id: ID!): Product\n}\n\nextend type User @key(fields: \"email\") {\n  email: ID! @external\n  totalProductsCreated: Int @external\n}\n"
+          },
+          "upstreamSchema": { "key": "6cf3f7888eaabbb6e8d0309a244f62e2e8b2b92e" }
+        },
+        "requestTimeoutSeconds": "10",
+        "id": "b8ec93ae-f2ba-45bb-a9dc-b0d7f1086654",
+        "keys": [
+          { "typeName": "Product", "selectionSet": "id" },
+          { "typeName": "Product", "selectionSet": "package sku" },
+          { "typeName": "Product", "selectionSet": "sku variation { id }" },
+          { "typeName": "User", "selectionSet": "email" }
+        ],
+        "provides": [{ "typeName": "Product", "fieldName": "createdBy", "selectionSet": "totalProductsCreated" }]
+      },
+      {
+        "kind": "GRAPHQL",
+        "rootNodes": [
+          { "typeName": "User", "fieldNames": ["email", "name", "totalProductsCreated"] },
+          { "typeName": "Query", "fieldNames": ["user"] }
+        ],
+        "overrideFieldPathFromAlias": true,
+        "customGraphql": {
+          "fetch": {
+            "url": { "staticVariableContent": "http://localhost:4004/graphql" },
+            "method": "POST",
+            "body": {},
+            "baseUrl": {},
+            "path": {}
+          },
+          "subscription": {
+            "enabled": true,
+            "url": { "staticVariableContent": "http://localhost:4004/graphql" },
+            "protocol": "GRAPHQL_SUBSCRIPTION_PROTOCOL_WS",
+            "websocketSubprotocol": "GRAPHQL_WEBSOCKET_SUBPROTOCOL_AUTO"
+          },
+          "federation": {
+            "enabled": true,
+            "serviceSdl": "type User @key(fields: \"email\") {\n  email: ID!\n  name: String\n  totalProductsCreated: Int\n}\n\ntype Query {\n  user: User\n}"
+          },
+          "upstreamSchema": { "key": "bb928ff62514fe715b27677dcd371050ded4c624" }
+        },
+        "requestTimeoutSeconds": "10",
+        "id": "6cf50f93-00e0-4418-bab4-d4e64c077fd3",
+        "keys": [{ "typeName": "User", "selectionSet": "email" }]
+      },
+      {
+        "kind": "GRAPHQL",
+        "rootNodes": [
+          { "typeName": "Product", "fieldNames": ["delivery", "id"], "externalFieldNames": ["id", "dimensions"] }
+        ],
+        "childNodes": [
+          { "typeName": "ProductDimension", "fieldNames": ["size", "weight"] },
+          { "typeName": "DeliveryEstimates", "fieldNames": ["estimatedDelivery", "fastestDelivery"] }
+        ],
+        "overrideFieldPathFromAlias": true,
+        "customGraphql": {
+          "fetch": {
+            "url": { "staticVariableContent": "http://localhost:4001/graphql" },
+            "method": "POST",
+            "body": {},
+            "baseUrl": {},
+            "path": {}
+          },
+          "subscription": {
+            "enabled": true,
+            "url": { "staticVariableContent": "http://localhost:4001/graphql" },
+            "protocol": "GRAPHQL_SUBSCRIPTION_PROTOCOL_WS",
+            "websocketSubprotocol": "GRAPHQL_WEBSOCKET_SUBPROTOCOL_AUTO"
+          },
+          "federation": {
+            "enabled": true,
+            "serviceSdl": "directive @tag(name: String!) repeatable on FIELD_DEFINITION\n\nextend type Product @key(fields: \"id\") {\n  id: ID! @external @tag(name: \"hi-from-inventory\")\n  dimensions: ProductDimension @external\n  delivery(zip: String): DeliveryEstimates @requires(fields: \"dimensions { size weight }\")\n}\n\ntype ProductDimension {\n  size: String\n  weight: Float @tag(name: \"hi-from-inventory-value-type-field\")\n}\n\ntype DeliveryEstimates {\n  estimatedDelivery: String!\n  fastestDelivery: String\n}\n"
+          },
+          "upstreamSchema": { "key": "644411ffe9977195fa53b0ee4956274d05712572" }
+        },
+        "requestTimeoutSeconds": "10",
+        "id": "92df28ea-53f8-4f62-8920-979f4d0268f3",
+        "keys": [{ "typeName": "Product", "selectionSet": "id" }],
+        "requires": [{ "typeName": "Product", "fieldName": "delivery", "selectionSet": "dimensions { size weight }" }]
+      }
+    ],
+    "fieldConfigurations": [
+      {
+        "typeName": "Query",
+        "fieldName": "panda",
+        "argumentsConfiguration": [{ "name": "name", "sourceType": "FIELD_ARGUMENT" }]
+      },
+      {
+        "typeName": "Query",
+        "fieldName": "product",
+        "argumentsConfiguration": [{ "name": "id", "sourceType": "FIELD_ARGUMENT" }]
+      },
+      {
+        "typeName": "Product",
+        "fieldName": "delivery",
+        "argumentsConfiguration": [{ "name": "zip", "sourceType": "FIELD_ARGUMENT" }]
+      }
+    ],
+    "graphqlSchema": "schema {\n  query: Query\n}\n\ndirective @tag(name: String!) repeatable on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | UNION\n\ntype Query {\n  allPandas: [Panda]\n  panda(name: ID!): Panda\n  allProducts: [Product]\n  product(id: ID!): Product\n  user: User\n}\n\ntype Panda {\n  name: ID!\n  favoriteFood: String\n}\n\ntype Product {\n  id: ID! @tag(name: \"hi-from-products\") @tag(name: \"hi-from-inventory\")\n  sku: String @tag(name: \"hi-from-products\")\n  package: String\n  variation: ProductVariation\n  dimensions: ProductDimension\n  createdBy: User\n  delivery(zip: String): DeliveryEstimates\n}\n\ntype ProductVariation {\n  id: ID!\n}\n\ntype ProductDimension {\n  size: String\n  weight: Float @tag(name: \"hi-from-inventory-value-type-field\")\n}\n\ntype User {\n  email: ID!\n  totalProductsCreated: Int\n  name: String\n}\n\ntype DeliveryEstimates {\n  estimatedDelivery: String!\n  fastestDelivery: String\n}",
+    "stringStorage": {
+      "6cfc16e8e6fabdc40cd4856299d2af30b5ee78e3": "schema {\n  query: Query\n}\n\ndirective @extends on INTERFACE | OBJECT\n\ndirective @external on FIELD_DEFINITION | OBJECT\n\ndirective @key(fields: openfed__FieldSet!, resolvable: Boolean = true) repeatable on INTERFACE | OBJECT\n\ndirective @provides(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @requires(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @tag(name: String!) repeatable on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | UNION\n\ntype Panda {\n  favoriteFood: String\n  name: ID!\n}\n\ntype Query {\n  allPandas: [Panda]\n  panda(name: ID!): Panda\n}\n\nscalar openfed__FieldSet",
+      "6cf3f7888eaabbb6e8d0309a244f62e2e8b2b92e": "schema {\n  query: Query\n}\n\ndirective @extends on INTERFACE | OBJECT\n\ndirective @external on FIELD_DEFINITION | OBJECT\n\ndirective @key(fields: openfed__FieldSet!, resolvable: Boolean = true) repeatable on INTERFACE | OBJECT\n\ndirective @provides(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @requires(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @tag(name: String!) repeatable on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | UNION\n\ntype Product @key(fields: \"id\") @key(fields: \"sku package\") @key(fields: \"sku variation { id }\") {\n  createdBy: User @provides(fields: \"totalProductsCreated\")\n  dimensions: ProductDimension\n  id: ID! @tag(name: \"hi-from-products\")\n  package: String\n  sku: String @tag(name: \"hi-from-products\")\n  variation: ProductVariation\n}\n\ntype ProductDimension {\n  size: String\n  weight: Float\n}\n\ntype ProductVariation {\n  id: ID!\n}\n\ntype Query {\n  allProducts: [Product]\n  product(id: ID!): Product\n}\n\ntype User @key(fields: \"email\") {\n  email: ID! @external\n  totalProductsCreated: Int @external\n}\n\nscalar openfed__FieldSet",
+      "bb928ff62514fe715b27677dcd371050ded4c624": "schema {\n  query: Query\n}\n\ndirective @extends on INTERFACE | OBJECT\n\ndirective @external on FIELD_DEFINITION | OBJECT\n\ndirective @key(fields: openfed__FieldSet!, resolvable: Boolean = true) repeatable on INTERFACE | OBJECT\n\ndirective @provides(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @requires(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @tag(name: String!) repeatable on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | UNION\n\ntype Query {\n  user: User\n}\n\ntype User @key(fields: \"email\") {\n  email: ID!\n  name: String\n  totalProductsCreated: Int\n}\n\nscalar openfed__FieldSet",
+      "644411ffe9977195fa53b0ee4956274d05712572": "directive @extends on INTERFACE | OBJECT\n\ndirective @external on FIELD_DEFINITION | OBJECT\n\ndirective @key(fields: openfed__FieldSet!, resolvable: Boolean = true) repeatable on INTERFACE | OBJECT\n\ndirective @provides(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @requires(fields: openfed__FieldSet!) on FIELD_DEFINITION\n\ndirective @tag(name: String!) repeatable on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | UNION\n\ntype DeliveryEstimates {\n  estimatedDelivery: String!\n  fastestDelivery: String\n}\n\ntype Product @key(fields: \"id\") {\n  delivery(zip: String): DeliveryEstimates @requires(fields: \"dimensions { size weight }\")\n  dimensions: ProductDimension @external\n  id: ID! @external @tag(name: \"hi-from-inventory\")\n}\n\ntype ProductDimension {\n  size: String\n  weight: Float @tag(name: \"hi-from-inventory-value-type-field\")\n}\n\nscalar openfed__FieldSet"
+    },
+    "graphqlClientSchema": "type Query {\n  allPandas: [Panda]\n  panda(name: ID!): Panda\n  allProducts: [Product]\n  product(id: ID!): Product\n  user: User\n}\n\ntype Panda {\n  name: ID!\n  favoriteFood: String\n}\n\ntype Product {\n  id: ID!\n  sku: String\n  package: String\n  variation: ProductVariation\n  dimensions: ProductDimension\n  createdBy: User\n  delivery(zip: String): DeliveryEstimates\n}\n\ntype ProductVariation {\n  id: ID!\n}\n\ntype ProductDimension {\n  size: String\n  weight: Float\n}\n\ntype User {\n  email: ID!\n  totalProductsCreated: Int\n  name: String\n}\n\ntype DeliveryEstimates {\n  estimatedDelivery: String!\n  fastestDelivery: String\n}"
+  },
+  "version": "fd5c7355-89a0-461c-a3e5-c1024d14dcc0",
+  "subgraphs": [
+    {
+      "id": "726bc6b6-bbbe-40f4-b017-9a01c9accb61",
+      "name": "pandas-apollo",
+      "routingUrl": "http://localhost:4002/graphql"
+    },
+    {
+      "id": "b8ec93ae-f2ba-45bb-a9dc-b0d7f1086654",
+      "name": "products-apollo",
+      "routingUrl": "http://localhost:4003/graphql"
+    },
+    {
+      "id": "6cf50f93-00e0-4418-bab4-d4e64c077fd3",
+      "name": "users-apollo",
+      "routingUrl": "http://localhost:4004/graphql"
+    },
+    {
+      "id": "92df28ea-53f8-4f62-8920-979f4d0268f3",
+      "name": "inventory-apollo",
+      "routingUrl": "http://localhost:4001/graphql"
+    }
+  ]
+}

@@ -2,8 +2,8 @@ name: Schema Loader CI
 on:
   pull_request:
     paths:
-      - 'packages/schema-loader/**/*'
-      - '.github/workflows/schema-loader-ci.yaml'
+      - 'packages/cosmo-to-apollo-schema/**/*'
+      - '.github/workflows/cosmo-to-apollo-schema-ci.yaml'
 
 concurrency:
   group: ${{github.workflow}}-${{github.head_ref}}
@@ -27,4 +27,4 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run --filter ./packages/schema-loader build
+        run: pnpm run --filter ./packages/cosmo-to-apollo-schema build

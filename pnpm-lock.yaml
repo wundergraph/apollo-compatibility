@@ -39,7 +39,7 @@ importers:
         specifier: ^2.0.3
         version: 2.1.1(@types/node@22.7.4)
 
-  examples/server-schema-loader:
+  examples/schema-loader-cdn:
     dependencies:
       '@apollo/gateway':
         specifier: ^2.9.2
@@ -47,9 +47,9 @@ importers:
       '@apollo/server':
         specifier: ^4.11.0
         version: 4.11.0(graphql@16.9.0)
-      '@wundergraph/cosmo-schema-loader':
+      '@wundergraph/cosmo-to-apollo-schema':
         specifier: workspace:*
-        version: link:../../packages/schema-loader
+        version: link:../../packages/cosmo-to-apollo-schema
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -64,7 +64,57 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
 
-  packages/schema-loader:
+  examples/schema-loader-file:
+    dependencies:
+      '@apollo/gateway':
+        specifier: ^2.9.2
+        version: 2.9.2(graphql@16.9.0)
+      '@apollo/server':
+        specifier: ^4.11.0
+        version: 4.11.0(graphql@16.9.0)
+      '@wundergraph/cosmo-to-apollo-schema':
+        specifier: workspace:*
+        version: link:../../packages/cosmo-to-apollo-schema
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      graphql:
+        specifier: ^16.9.0
+        version: 16.9.0
+    devDependencies:
+      '@types/node':
+        specifier: ^22.7.4
+        version: 22.7.4
+      typescript:
+        specifier: ^5.6.2
+        version: 5.6.2
+
+  examples/schema-loader-s3:
+    dependencies:
+      '@apollo/gateway':
+        specifier: ^2.9.2
+        version: 2.9.2(graphql@16.9.0)
+      '@apollo/server':
+        specifier: ^4.11.0
+        version: 4.11.0(graphql@16.9.0)
+      '@wundergraph/cosmo-to-apollo-schema':
+        specifier: workspace:*
+        version: link:../../packages/cosmo-to-apollo-schema
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      graphql:
+        specifier: ^16.9.0
+        version: 16.9.0
+    devDependencies:
+      '@types/node':
+        specifier: ^22.7.4
+        version: 22.7.4
+      typescript:
+        specifier: ^5.6.2
+        version: 5.6.2
+
+  packages/cosmo-to-apollo-schema:
     dependencies:
       '@apollo/composition':
         specifier: ^2.9.2
@@ -74,10 +124,10 @@ importers:
         version: 2.9.2(graphql@16.9.0)
       '@wundergraph/composition':
         specifier: ^0.29.0
-        version: 0.29.0
+        version: 0.29.1
       '@wundergraph/cosmo-connect':
         specifier: ^0.84.0
-        version: 0.84.0(@connectrpc/connect@1.5.0)(@tanstack/react-query@5.56.2)(react-dom@18.3.1)(react@18.3.1)
+        version: 0.84.0(@connectrpc/connect@1.6.1)(@tanstack/react-query@5.59.14)(react-dom@18.3.1)(react@18.3.1)
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -252,7 +302,7 @@ packages:
       '@types/node-fetch': 2.6.11
       async-retry: 1.3.3
       cors: 2.8.5
-      express: 4.21.0
+      express: 4.21.1
       graphql: 16.9.0
       loglevel: 1.9.2
       lru-cache: 7.18.3
@@ -558,7 +608,7 @@ packages:
       chalk: 5.3.0
     dev: true
 
-  /@connectrpc/connect-query@1.4.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.5.0)(@tanstack/react-query@5.56.2)(react-dom@18.3.1)(react@18.3.1):
+  /@connectrpc/connect-query@1.4.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1)(@tanstack/react-query@5.59.14)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-ZjBLtaGoBPDMtdRu4KiX7KpSigifiZiVaenhXHUsmNRjLj9r4OxQM+O2OqvTQ1YJhP4/h1xL+HX7YB0gcQ0FoA==}
     peerDependencies:
       '@bufbuild/protobuf': ^1.10.0
@@ -568,15 +618,15 @@ packages:
       react-dom: ^18.3.1
     dependencies:
       '@bufbuild/protobuf': 1.10.0
-      '@connectrpc/connect': 1.5.0(@bufbuild/protobuf@1.10.0)
-      '@tanstack/react-query': 5.56.2(react@18.3.1)
+      '@connectrpc/connect': 1.6.1(@bufbuild/protobuf@1.10.0)
+      '@tanstack/react-query': 5.59.14(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       stable-hash: 0.0.4
     dev: false
 
-  /@connectrpc/connect@1.5.0(@bufbuild/protobuf@1.10.0):
-    resolution: {integrity: sha512-1gGg0M6c2Y3lnr5itis9dNj9r8hbOIuBMqoGSbUy7L7Vjw4MAttjJzJfj9HCDgytGCJkGanYEYI6MQVDijdVQw==}
+  /@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0):
+    resolution: {integrity: sha512-KchMDNtU4CDTdkyf0qG7ugJ6qHTOR/aI7XebYn3OTCNagaDYWiZUVKgRgwH79yeMkpNgvEUaXSK7wKjaBK9b/Q==}
     peerDependencies:
       '@bufbuild/protobuf': ^1.10.0
     dependencies:
@@ -807,25 +857,25 @@ packages:
       tslib: 2.7.0
     dev: false
 
-  /@graphql-tools/merge@9.0.7(graphql@16.9.0):
-    resolution: {integrity: sha512-lbTrIuXIbUSmSumHkPRY1QX0Z8JEtmRhnIrkH7vkfeEmf0kNn/nCWvJwqokm5U7L+a+DA1wlRM4slIlbfXjJBA==}
+  /@graphql-tools/merge@9.0.8(graphql@16.9.0):
+    resolution: {integrity: sha512-RG9NEp4fi0MoFi0te4ahqTMYuavQnXlpEZxxMomdCa6CI5tfekcVm/rsLF5Zt8O4HY+esDt9+4dCL+aOKvG79w==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/utils': 10.5.4(graphql@16.9.0)
+      '@graphql-tools/utils': 10.5.5(graphql@16.9.0)
       graphql: 16.9.0
       tslib: 2.7.0
     dev: false
 
-  /@graphql-tools/schema@10.0.6(graphql@16.9.0):
-    resolution: {integrity: sha512-EIJgPRGzpvDFEjVp+RF1zNNYIC36BYuIeZ514jFoJnI6IdxyVyIRDLx/ykgMdaa1pKQerpfdqDnsF4JnZoDHSQ==}
+  /@graphql-tools/schema@10.0.7(graphql@16.9.0):
+    resolution: {integrity: sha512-Cz1o+rf9cd3uMgG+zI9HlM5mPlnHQUlk/UQRZyUlPDfT+944taLaokjvj7AI6GcOFVf4f2D11XthQp+0GY31jQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/merge': 9.0.7(graphql@16.9.0)
-      '@graphql-tools/utils': 10.5.4(graphql@16.9.0)
+      '@graphql-tools/merge': 9.0.8(graphql@16.9.0)
+      '@graphql-tools/utils': 10.5.5(graphql@16.9.0)
       graphql: 16.9.0
       tslib: 2.7.0
       value-or-promise: 1.0.12
@@ -843,8 +893,8 @@ packages:
       value-or-promise: 1.0.12
     dev: false
 
-  /@graphql-tools/utils@10.5.4(graphql@16.9.0):
-    resolution: {integrity: sha512-XHnyCWSlg1ccsD8s0y6ugo5GZ5TpkTiFVNPSYms5G0s6Z/xTuSmiLBfeqgkfaCwLmLaQnRCmNDL2JRnqc2R5bQ==}
+  /@graphql-tools/utils@10.5.5(graphql@16.9.0):
+    resolution: {integrity: sha512-LF/UDWmMT0mnobL2UZETwYghV7HYBzNaGj0SAkCYOMy/C3+6sQdbcTksnoFaKR9XIVD78jNXEGfivbB8Zd+cwA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
@@ -1931,16 +1981,16 @@ packages:
     engines: {node: '>=18'}
     dev: true
 
-  /@tanstack/query-core@5.56.2:
-    resolution: {integrity: sha512-gor0RI3/R5rVV3gXfddh1MM+hgl0Z4G7tj6Xxpq6p2I03NGPaJ8dITY9Gz05zYYb/EJq9vPas/T4wn9EaDPd4Q==}
+  /@tanstack/query-core@5.59.13:
+    resolution: {integrity: sha512-Oou0bBu/P8+oYjXsJQ11j+gcpLAMpqW42UlokQYEz4dE7+hOtVO9rVuolJKgEccqzvyFzqX4/zZWY+R/v1wVsQ==}
     dev: false
 
-  /@tanstack/react-query@5.56.2(react@18.3.1):
-    resolution: {integrity: sha512-SR0GzHVo6yzhN72pnRhkEFRAHMsUo5ZPzAxfTMvUxFIDVS6W9LYUp6nXW3fcHVdg0ZJl8opSH85jqahvm6DSVg==}
+  /@tanstack/react-query@5.59.14(react@18.3.1):
+    resolution: {integrity: sha512-2cM4x3Ka4Thl7/wnjf++EMGA2Is/RgPynn83D4kfGiJOGSjb5T2D3EEOlC8Nt6U2htLS3imOXjOSMEjC3K7JNg==}
     peerDependencies:
       react: ^18 || ^19
     dependencies:
-      '@tanstack/query-core': 5.56.2
+      '@tanstack/query-core': 5.59.13
       react: 18.3.1
     dev: false
 
@@ -2045,7 +2095,7 @@ packages:
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
     dependencies:
       '@types/node': 22.7.4
-      form-data: 4.0.0
+      form-data: 4.0.1
     dev: false
 
   /@types/node@22.7.4:
@@ -2150,22 +2200,22 @@ packages:
       tinyrainbow: 1.2.0
     dev: true
 
-  /@wundergraph/composition@0.29.0:
-    resolution: {integrity: sha512-D5iTNLvVfOt0uwBbdoNS+kg7zX4RDh2fw0iPgZxULpgGSIcEljlLsuWVItdRImIBWTlpMi0OB/TVwEGdLKrk9w==}
+  /@wundergraph/composition@0.29.1:
+    resolution: {integrity: sha512-K46ckm+2V9Rtj10oV9wS7mRoh3YQd2kjwPhmqEx2KmS9EUp60qr4x699e3rrjSDkfK2CwT0SFzEjrIgv2CjBlg==}
     dependencies:
-      '@graphql-tools/merge': 9.0.7(graphql@16.9.0)
-      '@graphql-tools/schema': 10.0.6(graphql@16.9.0)
-      '@graphql-tools/utils': 10.5.4(graphql@16.9.0)
+      '@graphql-tools/merge': 9.0.8(graphql@16.9.0)
+      '@graphql-tools/schema': 10.0.7(graphql@16.9.0)
+      '@graphql-tools/utils': 10.5.5(graphql@16.9.0)
       graphql: 16.9.0
       lodash: 4.17.21
       pathe: 1.1.2
     dev: false
 
-  /@wundergraph/cosmo-connect@0.84.0(@connectrpc/connect@1.5.0)(@tanstack/react-query@5.56.2)(react-dom@18.3.1)(react@18.3.1):
+  /@wundergraph/cosmo-connect@0.84.0(@connectrpc/connect@1.6.1)(@tanstack/react-query@5.59.14)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-GCDmaa0ERCV2uXQy5Ih9Qrx8lKmDTk8b3PAFUlLV0chYQFic/BdYKhY0TtrDJCrOudiJG6UTrV53Lyxb+2Lb9g==}
     dependencies:
       '@bufbuild/protobuf': 1.10.0
-      '@connectrpc/connect-query': 1.4.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.5.0)(@tanstack/react-query@5.56.2)(react-dom@18.3.1)(react@18.3.1)
+      '@connectrpc/connect-query': 1.4.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1)(@tanstack/react-query@5.59.14)(react-dom@18.3.1)(react@18.3.1)
     transitivePeerDependencies:
       - '@connectrpc/connect'
       - '@tanstack/react-query'
@@ -2386,7 +2436,7 @@ packages:
     resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
     dependencies:
       follow-redirects: 1.15.9
-      form-data: 4.0.0
+      form-data: 4.0.1
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -2858,8 +2908,8 @@ packages:
     resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
     dev: false
 
-  /cookie@0.6.0:
-    resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
+  /cookie@0.7.1:
+    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
     engines: {node: '>= 0.6'}
     dev: false
 
@@ -3025,7 +3075,7 @@ packages:
       object-is: 1.1.6
       object-keys: 1.1.1
       object.assign: 4.1.5
-      regexp.prototype.flags: 1.5.2
+      regexp.prototype.flags: 1.5.3
       side-channel: 1.0.6
       which-boxed-primitive: 1.0.2
       which-collection: 1.0.2
@@ -3313,8 +3363,8 @@ packages:
     resolution: {integrity: sha512-dX7e/LHVJ6W3DE1MHWi9S1EYzDESENfLrYohG2G++ovZrYOkm4Knwa0mc1cn84xJOR4KEU0WSchhLbd0UklbHw==}
     dev: true
 
-  /express@4.21.0:
-    resolution: {integrity: sha512-VqcNGcj/Id5ZT1LZ/cfihi3ttTn+NJmkli2eZADigjq29qTlWi/hAQ43t/VLPq8+UX06FCEx3ByOYet6ZFblng==}
+  /express@4.21.1:
+    resolution: {integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==}
     engines: {node: '>= 0.10.0'}
     dependencies:
       accepts: 1.3.8
@@ -3322,7 +3372,7 @@ packages:
       body-parser: 1.20.3
       content-disposition: 0.5.4
       content-type: 1.0.5
-      cookie: 0.6.0
+      cookie: 0.7.1
       cookie-signature: 1.0.6
       debug: 2.6.9
       depd: 2.0.0
@@ -3484,8 +3534,8 @@ packages:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
 
-  /form-data@4.0.0:
-    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+  /form-data@4.0.1:
+    resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
     dependencies:
       asynckit: 0.4.0
@@ -5629,8 +5679,8 @@ packages:
       strip-indent: 4.0.0
     dev: true
 
-  /regexp.prototype.flags@1.5.2:
-    resolution: {integrity: sha512-NcDiDkTLuPR+++OCKB0nWafEmhg/Da8aUPLPMQbK+bxKKCm1/S5he+AqYa4PlMCVBalb4/yxIRub6qkEx5yJbw==}
+  /regexp.prototype.flags@1.5.3:
+    resolution: {integrity: sha512-vqlC04+RQoFalODCbCumG2xIOvapzVMHwsyIGM/SIE8fRhFFsXeH8/QQ+s0T0kDAhKc4k30s73/0ydkHQz6HlQ==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.7

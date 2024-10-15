@@ -13,7 +13,7 @@ import { ApolloGateway } from '@apollo/gateway';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 // 1. Import Schema Loader
-import { SchemaLoader } from '@wundergraph/cosmo-schema-loader';
+import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
 
 // 2. Configure with file, cdn or s3
 const cosmoSchemaLoader = new SchemaLoader({

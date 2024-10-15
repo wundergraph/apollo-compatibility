@@ -1,3 +1,5 @@
 packages:
-  - packages/schema-loader
-  - examples/server-schema-loader
+  - packages/cosmo-to-apollo-schema
+  - examples/schema-loader-cdn
+  - examples/schema-loader-s3
+  - examples/schema-loader-file
