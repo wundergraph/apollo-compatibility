@@ -1,44 +1,37 @@
 # Cosmo Apollo Compatibility
 
-This repository provides a collection of useful plugins and packages to help facilitate migration from Apollo to [Cosmo](https://github.com/wundergraph/cosmo).
+This repository contains a set of plugins and packages designed to streamline the migration from Apollo to [Cosmo](https://github.com/wundergraph/cosmo).
 
-##  Packages
+## Packages
 
-### 1. [Cosmo to Apollo Schema Loader](/packages/cosmo-to-apollo-schema)
- 
-An Apollo Gateway plugin/helper that helps you to import your subgraphs directly from your Cosmo execution config and compose it into a supergraph sdl.
+### 1. Schema Loader
 
-#### Cosmo cloud usage
-1. Install the cli and login to your organization
-```bash
-npm i -g wgc
-wgc auth login
-```
+The **Schema Loader** is an Apollo Gateway plugin that enables seamless integration of your subgraphs from Cosmo's execution configuration. It helps compose the subgraphs into a Supergraph SDL, simplifying the transition to Cosmo.
 
-2. Generate a token for your graph
-```bash
-wgc router token create your_graph_name
-```
+#### Usage with Cosmo Cloud
 
-2. Install and configure the schema loader for your apollo gateway
+Before using the example below, ensure you have created an API token for your federated graph on Cosmo. You can generate this token by running the following [**wgc**](https://cosmo-docs.wundergraph.com/cli/intro) command:
 
 ```bash
-npm i @wundergraph/cosmo-to-apollo-schema
+wgc router token create
 ```
+
+Once you have the token, you can use it in your environment file (`.env`) as shown in the [full example](/packages/schema-loader). The following code snippet demonstrates how easy it is to integrate the Schema Loader into your Apollo Gateway setup:
 
 ```ts
 import dotenv from 'dotenv';
 import { ApolloGateway } from '@apollo/gateway';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
+import { SchemaLoader } from '@wundergraph/cosmo-schema-loader';
 
 dotenv.config();
 
-// Fetches from Cosmo Cloud CDN by default
+// By default, the schema is fetched from the Cosmo Cloud CDN
 const cosmoSchemaLoader = new SchemaLoader({
   cdn: {
-    // Token for your federated graph on cosmo. 
+    // Provide the token for your federated graph on Cosmo.
+    // You can generate it using `wgc router token create`
     token: process.env.GRAPH_TOKEN,
   },
   pollInterval: 3000,
@@ -53,11 +46,17 @@ const server = new ApolloServer({
 });
 
 startStandaloneServer(server).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+  console.log(`🚀  Server is running at ${url}`);
 });
-
 ```
+
+### Our partners ❤️
+<p align="center">
+<a href="https://drizzle.team" target="_blank">
+<img src='/assets/soundcloud.jpg'>
+</a>
+</p>
 
 ## License
 
-Cosmo is distributed under the [Apache License, Version 2.0](./LICENSE).
+This project is licensed under the [Apache License, Version 2.0](./LICENSE).
