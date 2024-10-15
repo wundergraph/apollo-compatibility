@@ -28,8 +28,6 @@ jobs:
           token: ${{ secrets.GH_PAT_TOKEN }}
 
       - uses: ./.github/actions/node
-        with:
-          working-directory: ${{ env.GH_PAT_TOKEN }}
 
       - run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
         shell: bash
