@@ -1,0 +1,26 @@
+{
+  "name": "server-schema-loader",
+  "version": "1.0.0",
+  "author": {
+    "name": "WunderGraph Maintainers",
+    "email": "info@wundergraph.com"
+  },
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "pnpm run build && node ./dist/index.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "@apollo/gateway": "^2.9.2",
+    "@apollo/server": "^4.11.0",
+    "@wundergraph/cosmo-schema-loader": "workspace:*",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "typescript": "^5.6.2"
+  }
+}
