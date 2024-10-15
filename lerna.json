@@ -10,8 +10,7 @@
       "createRelease": "github",
       "syncWorkspaceLock": true,
       "changelogIncludeCommitsClientLogin": " (@%l)",
-      "message": "chore(release): Publish [skip ci]",
-      "changelogHeaderMessage": "Binaries are attached to the github release otherwise all images can be found [here](https://github.com/orgs/wundergraph/packages?repo_name=apollo-compatibility)"
+      "message": "chore(release): Publish [skip ci]"
     }
   },
   "packages": ["packages/cosmo-to-apollo-schema"],
