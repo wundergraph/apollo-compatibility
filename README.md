@@ -23,15 +23,14 @@ import dotenv from 'dotenv';
 import { ApolloGateway } from '@apollo/gateway';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { SchemaLoader } from '@wundergraph/cosmo-schema-loader';
+import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
 
 dotenv.config();
 
-// By default, the schema is fetched from the Cosmo Cloud CDN
+// Fetches from Cosmo Cloud CDN by default
 const cosmoSchemaLoader = new SchemaLoader({
   cdn: {
-    // Provide the token for your federated graph on Cosmo.
-    // You can generate it using `wgc router token create`
+    // Token for your federated graph on cosmo. 
     token: process.env.GRAPH_TOKEN,
   },
   pollInterval: 3000,
@@ -46,8 +45,9 @@ const server = new ApolloServer({
 });
 
 startStandaloneServer(server).then(({ url }) => {
-  console.log(`🚀  Server is running at ${url}`);
+  console.log(`🚀  Server ready at ${url}`);
 });
+
 ```
 
 ### Our partners ❤️
