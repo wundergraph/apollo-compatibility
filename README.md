@@ -52,7 +52,7 @@ startStandaloneServer(server).then(({ url }) => {
 
 ### Our partners ❤️
 <p align="center">
-<a href="https://drizzle.team" target="_blank">
+<a href="https://github.com/soundcloud" target="_blank">
 <img src='/assets/soundcloud.jpg'>
 </a>
 </p>
