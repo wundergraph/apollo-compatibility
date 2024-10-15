@@ -9,6 +9,23 @@ This repository provides a collection of useful plugins and packages to help fac
 An Apollo Gateway plugin/helper that helps you to import your subgraphs directly from your Cosmo execution config and compose it into a supergraph sdl.
 
 #### Cosmo cloud usage
+1. Install the cli and login to your organization
+```bash
+npm i -g wgc
+wgc auth login
+```
+
+2. Generate a token for your graph
+```bash
+wgc router token create your_graph_name
+```
+
+2. Install and configure the schema loader for your apollo gateway
+
+```bash
+npm i @wundergraph/cosmo-schema-loader
+```
+
 ```ts
 import dotenv from 'dotenv';
 import { ApolloGateway } from '@apollo/gateway';
@@ -22,7 +39,6 @@ dotenv.config();
 const cosmoSchemaLoader = new SchemaLoader({
   cdn: {
     // Token for your federated graph on cosmo. 
-    // Can be generated using `wgc router token create`
     token: process.env.GRAPH_TOKEN,
   },
   pollInterval: 3000,
