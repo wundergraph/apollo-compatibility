@@ -1,7 +1,7 @@
 {
   "name": "@wundergraph/cosmo-to-apollo-schema",
   "description": "An Apollo Gateway plugin to load the supergraph schema from WunderGraph Cosmo for easy migration.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "WunderGraph Maintainers",
     "email": "info@wundergraph.com"
