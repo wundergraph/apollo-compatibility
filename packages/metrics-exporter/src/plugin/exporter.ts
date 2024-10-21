@@ -12,6 +12,8 @@ import {
   OperationTypeNode,
   type SelectionSetNode,
   type TypeNode,
+  VariableDefinitionNode,
+  VariableNode,
 } from 'graphql';
 import Queue from '@esm2cjs/yocto-queue'; // eslint-disable-line @typescript-eslint/naming-convention
 import {
@@ -27,6 +29,7 @@ import {
   TypeFieldUsageInfo,
 } from '../generated/graphqlmetrics/v1/graphqlmetrics_pb';
 import {type CosmoClient} from './cosmo-client';
+import { VariableValues } from '@apollo/server/dist/esm/externalTypes/graphql';
 
 const CLIENT_NAME_HEADER = 'apollographql-client-name';
 const CLIENT_VERSION_HEADER = 'apollographql-client-version';
@@ -296,29 +299,32 @@ function collectInputs(
 
   if (argument.value.kind === Kind.VARIABLE) {
     // Handle variable input
-    const variableDef = context.operation.variableDefinitions!.find(
-      (v) => v.variable.name.value === argument.name.value,
-    )!;
+    const variableDef: VariableDefinitionNode =
+      context.operation.variableDefinitions!.find(
+        (v) =>
+          v.variable.name.value === (argument.value as VariableNode).name.value,
+      )!;
     const variableNamedType = inferNamedType(variableDef.type);
     const varNamedTypeDef = context.schema.getType(variableNamedType)!;
 
     if (varNamedTypeDef.astNode?.kind === Kind.INPUT_OBJECT_TYPE_DEFINITION) {
       // Input object
-      const varObject = context.request.variables![argument.name.value]; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
-      const varObjFields = varNamedTypeDef.astNode.fields!;
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      for (const varField of Object.keys(varObject)) {
-        const fieldDef = varObjFields.find(
-          (field) => field.name.value === varField,
-        );
-        inputMetrics.push(
-          new InputUsageInfo({
-            Path: [variableNamedType, varField],
-            TypeName: variableNamedType,
-            NamedType: inferNamedType(fieldDef!.type),
-          }),
-        );
+      const varName = variableDef.variable.name.value;
+      if (context.request.variables) {
+        const varObject = context.request.variables[varName] as VariableValues;
+        const varObjFields = varNamedTypeDef.astNode.fields!;
+        for (const varField of Object.keys(varObject)) {
+          const fieldDef = varObjFields.find(
+            (field) => field.name.value === varField,
+          );
+          inputMetrics.push(
+            new InputUsageInfo({
+              Path: [variableNamedType, varField],
+              TypeName: variableNamedType,
+              NamedType: inferNamedType(fieldDef!.type),
+            }),
+          );
+        }
       }
     } else {
       // Input scalar
