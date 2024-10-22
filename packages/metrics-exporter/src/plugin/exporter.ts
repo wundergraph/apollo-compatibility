@@ -306,22 +306,16 @@ function collectInputs(
       )!;
     const variableNamedType = inferNamedType(variableDef.type);
     const varNamedTypeDef = context.schema.getType(variableNamedType)!;
-
+    // Object input
     if (varNamedTypeDef.astNode?.kind === Kind.INPUT_OBJECT_TYPE_DEFINITION) {
-      // Input object
-      const varName = variableDef.variable.name.value;
       if (context.request.variables) {
-        const varObject = context.request.variables[varName] as VariableValues;
         const varObjFields = varNamedTypeDef.astNode.fields!;
-        for (const varField of Object.keys(varObject)) {
-          const fieldDef = varObjFields.find(
-            (field) => field.name.value === varField,
-          );
+        for (const varField of varObjFields) {
           inputMetrics.push(
             new InputUsageInfo({
-              Path: [variableNamedType, varField],
+              Path: [variableNamedType, varField.name.value],
               TypeName: variableNamedType,
-              NamedType: inferNamedType(fieldDef!.type),
+              NamedType: inferNamedType(varField.type),
             }),
           );
         }
