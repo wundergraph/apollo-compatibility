@@ -29,7 +29,6 @@ import {
   TypeFieldUsageInfo,
 } from '../generated/graphqlmetrics/v1/graphqlmetrics_pb';
 import {type CosmoClient} from './cosmo-client';
-import { VariableValues } from '@apollo/server/dist/esm/externalTypes/graphql';
 
 const CLIENT_NAME_HEADER = 'apollographql-client-name';
 const CLIENT_VERSION_HEADER = 'apollographql-client-version';
