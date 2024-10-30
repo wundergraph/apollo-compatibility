@@ -23,7 +23,7 @@ However, plugin is stable and is able to report lots of standard schema usage, t
 import { ApolloGateway } from '@apollo/gateway';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { cosmoReportPlugin } from '@wundergraph/apollo-to-cosmo-metrics';
+import { cosmoReportPlugin, CosmoClient } from '@wundergraph/apollo-to-cosmo-metrics';
 
 const gateway = new ApolloGateway({
   supergraphSdl: 'supergraph-url',
