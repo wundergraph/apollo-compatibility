@@ -91,10 +91,6 @@ export function cosmoReportPlugin(
   };
 }
 
-/**
- *
- * @param batchSize how many items to offload. If no batch size, offload everything
- */
 async function processReports(cosmoClient: CosmoClient) {
   const reports: SchemaUsageInfoAggregation[] = [];
   for (let ii = 0; ii < reportQueue.size; ii++) {
