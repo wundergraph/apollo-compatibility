@@ -13,7 +13,7 @@
       "message": "chore(release): Publish [skip ci]"
     }
   },
-  "packages": ["packages/cosmo-to-apollo-schema"],
+  "packages": ["packages/cosmo-to-apollo-schema", "packages/apollo-to-cosmo-metrics"],
   "npmClient": "pnpm",
   "loglevel": "verbose"
 }

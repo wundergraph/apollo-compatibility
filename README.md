@@ -61,10 +61,34 @@ npm i @wundergraph/apollo-to-cosmo-metrics
 
 The **Metric Exporter** is a plugin that enables the collection and export of schema usage metrics from Apollo Gateway to Cosmo. It helps you monitor and analyze the usage of your clients and use Cosmo's powerful analytics features like breaking changes detection and schema evolution.
 
-Once you have the token, you can use it in your environment file (`.env`) as shown in the [full example](/packages/metrics-exporter). The following code snippet demonstrates how easy it is to integrate the metrics exporter into your Apollo Gateway setup:
+Once you have the token, you can use it in your environment file (`.env`) as shown in the [full example](/packages/apollo-to-cosmo-metrics). The following code snippet demonstrates how easy it is to integrate the metrics exporter into your Apollo Gateway setup:
 
 ```ts
-tdl
+
+import { ApolloGateway } from '@apollo/gateway';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
+import { cosmoReportPlugin, CosmoClient } from '@wundergraph/apollo-to-cosmo-metrics';
+
+const gateway = new ApolloGateway({
+  supergraphSdl: 'supergraph-url',
+});
+
+// Plugin definition
+const cosmoReportPlugin = cosmoReportPlugin(
+    new CosmoClient({
+      endpointUrl: 'https://cosmo-metrics.wundergraph.com',
+      routerToken: 'router-token',
+    }),
+  );
+
+const server = new ApolloServer({
+  gateway,
+  plugins: [cosmoReportPlugin],
+});
+
+startStandaloneServer(server)
+
 ```
 
 ### Our partners ❤️
