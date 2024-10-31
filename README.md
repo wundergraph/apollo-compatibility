@@ -14,6 +14,8 @@ wgc router token create
 
 ### 1. Schema Loader
 
+[![npm version](https://badge.fury.io/js/@wundergraph%2Fcosmo-to-apollo-schema.svg?icon=si:npm)](https://badge.fury.io/js/@wundergraph%2Fcosmo-to-apollo-schema)
+
 ```bash
 npm i @wundergraph/cosmo-to-apollo-schema
 ```
@@ -55,6 +57,8 @@ startStandaloneServer(server).then(({ url }) => {
 
 ### 2. Metric Exporter
 
+[![npm version](https://badge.fury.io/js/@wundergraph%2Fapollo-to-cosmo-metrics.svg)](https://badge.fury.io/js/@wundergraph%2Fapollo-to-cosmo-metrics)
+
 ```bash
 npm i @wundergraph/apollo-to-cosmo-metrics
 ```
@@ -78,7 +82,7 @@ const gateway = new ApolloGateway({
 const cosmoReportPlugin = cosmoReportPlugin(
     new CosmoClient({
       endpointUrl: 'https://cosmo-metrics.wundergraph.com',
-      routerToken: 'router-token',
+      routerToken: process.env.GRAPH_TOKEN,
     }),
   );
 

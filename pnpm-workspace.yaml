@@ -1,5 +1,7 @@
 packages:
   - packages/cosmo-to-apollo-schema
+  - packages/apollo-to-cosmo-metrics
+  - examples/apollo-to-cosmo-metrics
   - examples/schema-loader-cdn
   - examples/schema-loader-s3
   - examples/schema-loader-file

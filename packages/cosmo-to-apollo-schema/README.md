@@ -1,5 +1,7 @@
 # Schema Loader
 
+[![npm version](https://badge.fury.io/js/@wundergraph%2Fcosmo-to-apollo-schema.svg?icon=si:npm)](https://badge.fury.io/js/@wundergraph%2Fcosmo-to-apollo-schema)
+
 An Apollo Gateway plugin/helper that helps you to import your subgraphs directly from your Cosmo execution config and compose it into a supergraph sdl. It supports multiple import methods, including:
 
 - **Config File Watcher**

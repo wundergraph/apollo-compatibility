@@ -1,5 +1,7 @@
 ## Apollo To Cosmo Metrics
 
+[![npm version](https://badge.fury.io/js/@wundergraph%2Fapollo-to-cosmo-metrics.svg)](https://badge.fury.io/js/@wundergraph%2Fapollo-to-cosmo-metrics)
+
 Cosmo's schema usage plugin for Apollo Gateway was build for the reason of having ability to report
 usage metrics to Wundergraph's cosmo ecosystem that helps to track operation's usage together with underlying types, arguments its inputs that schema can define.
 

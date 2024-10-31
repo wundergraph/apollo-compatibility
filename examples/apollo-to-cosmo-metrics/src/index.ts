@@ -12,7 +12,7 @@ const gateway = new ApolloGateway({
 const cosmoReportPlugin = cosmoReportPlugin(
     new CosmoClient({
       endpointUrl: 'https://cosmo-metrics.wundergraph.com',
-      routerToken: 'router-token',
+      routerToken: process.env.GRAPH_TOKEN,
     }),
   );
 
