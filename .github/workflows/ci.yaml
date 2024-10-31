@@ -16,7 +16,7 @@ env:
   CI: true
 
 jobs:
-  stable-version:
+  build_test:
     # https://docs.npmjs.com/generating-provenance-statements#publishing-packages-with-provenance-via-github-actions
     permissions:
       id-token: write
