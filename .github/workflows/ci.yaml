@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+      branches:
+      - main
+  pull_request:
+      branches:
+      - main
+
+concurrency:
+  group: ${{github.workflow}}-${{github.head_ref}}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  stable-version:
+    # https://docs.npmjs.com/generating-provenance-statements#publishing-packages-with-provenance-via-github-actions
+    permissions:
+      id-token: write
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/node
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Test
+        run: pnpm run test
