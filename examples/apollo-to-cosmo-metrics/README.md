@@ -1,19 +1,3 @@
 # Apollo To Cosmo Metrics Example
 
-This example how cosmo report plugin can be used.
-
-```ts
-import { cosmoReportPlugin, CosmoClient } from '@wundergraph/apollo-to-cosmo-metrics';
-
-const cosmoReportPlugin = cosmoReportPlugin(
-    new CosmoClient({
-      endpointUrl: 'https://cosmo-metrics.wundergraph.com',
-      routerToken: process.env.GRAPH_TOKEN,
-    }),
-  );
-
-const server = new ApolloServer({
-  gateway,
-  plugins: [cosmoReportPlugin],
-});
-```
+This example uses an execution config file created from [test subgraphs](../../test-subgraphs) in the repository.

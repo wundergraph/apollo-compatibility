@@ -16,6 +16,7 @@
     "@apollo/gateway": "^2.9.2",
     "@apollo/server": "^4.11.0",
     "@wundergraph/apollo-to-cosmo-metrics": "workspace:*",
+    "@wundergraph/cosmo-to-apollo-schema": "workspace:*",
     "dotenv": "^16.4.5",
     "graphql": "^16.9.0"
   },

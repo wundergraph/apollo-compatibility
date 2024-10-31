@@ -24,36 +24,7 @@ The **Schema Loader** is an Apollo Gateway plugin that enables seamless integrat
 
 Once you have the token, you can use it in your environment file (`.env`) as shown in the [full example](/examples/schema-loader-cdn). The following code snippet demonstrates how easy it is to integrate the Schema Loader into your Apollo Gateway setup:
 
-```ts
-import dotenv from 'dotenv';
-import { ApolloGateway } from '@apollo/gateway';
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
-
-dotenv.config();
-
-// Fetches from Cosmo Cloud CDN by default
-const cosmoSchemaLoader = new SchemaLoader({
-  cdn: {
-    // Token for your federated graph on cosmo. 
-    token: process.env.GRAPH_TOKEN,
-  },
-  pollInterval: 3000,
-});
-
-const gateway = new ApolloGateway({
-  supergraphSdl: cosmoSchemaLoader.supergraphSdl,
-});
-
-const server = new ApolloServer({
-  gateway,
-});
-
-startStandaloneServer(server).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
-```
+**Example**: [Apollo Gateway with Schema Loader](./examples/schema-loader-cdn)
 
 ### 2. Metric Exporter
 
@@ -67,33 +38,7 @@ The **Metric Exporter** is a plugin that enables the collection and export of sc
 
 Once you have the token, you can use it in your environment file (`.env`) as shown in the [full example](/packages/apollo-to-cosmo-metrics). The following code snippet demonstrates how easy it is to integrate the metrics exporter into your Apollo Gateway setup:
 
-```ts
-
-import { ApolloGateway } from '@apollo/gateway';
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-import { cosmoReportPlugin, CosmoClient } from '@wundergraph/apollo-to-cosmo-metrics';
-
-const gateway = new ApolloGateway({
-  supergraphSdl: 'supergraph-url',
-});
-
-// Plugin definition
-const cosmoReportPlugin = cosmoReportPlugin(
-    new CosmoClient({
-      endpointUrl: 'https://cosmo-metrics.wundergraph.com',
-      routerToken: process.env.GRAPH_TOKEN,
-    }),
-  );
-
-const server = new ApolloServer({
-  gateway,
-  plugins: [cosmoReportPlugin],
-});
-
-startStandaloneServer(server)
-
-```
+**Example**: [Apollo Gateway with Metrics Exporter](./examples/apollo-to-cosmo-metrics)
 
 ### Our partners ❤️
 <p align="center">

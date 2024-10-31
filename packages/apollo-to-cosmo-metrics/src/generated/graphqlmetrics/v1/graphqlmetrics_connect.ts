@@ -5,7 +5,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { PublishAggregatedGraphQLRequestMetricsRequest, PublishAggregatedGraphQLRequestMetricsResponse, PublishGraphQLRequestMetricsRequest, PublishOperationCoverageReportResponse } from "./graphqlmetrics_pb";
+import { PublishAggregatedGraphQLRequestMetricsRequest, PublishAggregatedGraphQLRequestMetricsResponse, PublishGraphQLRequestMetricsRequest, PublishOperationCoverageReportResponse } from "./graphqlmetrics_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**

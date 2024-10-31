@@ -405,6 +405,13 @@ export class TypeFieldUsageInfo extends Message<TypeFieldUsageInfo> {
    */
   NamedType = "";
 
+  /**
+   * IndirectInterfaceField is true if the field is an interface field that is used through an implementing type
+   *
+   * @generated from field: bool IndirectInterfaceField = 6;
+   */
+  IndirectInterfaceField = false;
+
   constructor(data?: PartialMessage<TypeFieldUsageInfo>) {
     super();
     proto3.util.initPartial(data, this);
@@ -418,6 +425,7 @@ export class TypeFieldUsageInfo extends Message<TypeFieldUsageInfo> {
     { no: 3, name: "SubgraphIDs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "Count", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 5, name: "NamedType", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "IndirectInterfaceField", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TypeFieldUsageInfo {

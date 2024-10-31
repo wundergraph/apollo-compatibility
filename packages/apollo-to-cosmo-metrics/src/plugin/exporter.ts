@@ -27,8 +27,8 @@ import {
   SchemaUsageInfo,
   SchemaUsageInfoAggregation,
   TypeFieldUsageInfo,
-} from '../generated/graphqlmetrics/v1/graphqlmetrics_pb';
-import {type CosmoClient} from './cosmo-client';
+} from '../generated/graphqlmetrics/v1/graphqlmetrics_pb.js';
+import {type CosmoClient} from './cosmo-client.js';
 
 const CLIENT_NAME_HEADER = 'apollographql-client-name';
 const CLIENT_VERSION_HEADER = 'apollographql-client-version';

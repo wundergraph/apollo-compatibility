@@ -1,16 +1,14 @@
-import assert from 'node:assert';
-import {isMatch} from 'lodash';
+import { describe, expect, afterEach, it, vi, beforeEach } from 'vitest';
+import {isMatch} from 'lodash-es';
 import {ApolloServer, type ApolloServerPlugin} from '@apollo/server';
-import {mock} from 'jest-mock-extended';
 import Queue from '@esm2cjs/yocto-queue';
-import {Context, cosmoReportPlugin} from '../src/plugin/exporter';
-import {type CosmoClient} from '../src/plugin/cosmo-client';
+import {Context, cosmoReportPlugin, CosmoClient} from '../src/index.js';
 import {
   ArgumentUsageInfo,
   InputUsageInfo,
   SchemaUsageInfoAggregation,
   TypeFieldUsageInfo,
-} from '../src/generated/graphqlmetrics/v1/graphqlmetrics_pb';
+} from '../src/generated/graphqlmetrics/v1/graphqlmetrics_pb.js';
 
 // Simple schema def that covers test needs
 const typeDefs = `#graphql
@@ -68,7 +66,11 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
   let plugin: ApolloServerPlugin<Context>;
 
   beforeEach(async () => {
-    cosmoClient = mock<CosmoClient>();
+    vi.useFakeTimers()
+    cosmoClient = new CosmoClient({
+      endpointUrl: 'https://cosmo-metrics.wundergraph.com',
+      routerToken: 'secret',
+    })
     plugin = cosmoReportPlugin(cosmoClient, 2000);
     testServer = new ApolloServer<Context>({
       typeDefs,
@@ -82,7 +84,9 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
   });
 
   it('should collect metrics about simple query without input or arguments', async () => {
-    const enqueueSpy = jest.spyOn(Queue.prototype, 'enqueue');
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValueOnce();
+
+    const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
     const response = await testServer.executeOperation({
       query: 'query Me { me { username } }',
     });
@@ -118,15 +122,24 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
     expect(metrics!.SchemaUsage!.InputMetrics.length).toEqual(0);
 
     // Verify that query has not failed
-    assert(response.body.kind === 'single');
+    expect(response.body.kind).toBe('single');
+
+    // @ts-ignore
     expect(response.body.singleResult.data?.me).toEqual({
       username: 'myusername',
     });
+
+    vi.advanceTimersByTime(3000);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(1);
+
     enqueueSpy.mockRestore();
+    reportMetricsSpy.mockRestore();
   });
 
   it('should collect metrics about mutation with input parameters', async () => {
-    const enqueueSpy = jest.spyOn(Queue.prototype, 'enqueue');
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValueOnce();
+
+    const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
     const response = await testServer.executeOperation({
       query:
         'mutation AddUser($input: AddUserInput!) { addUserToSystem(input: $input) {... on User { age } } }',
@@ -202,15 +215,24 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
     ).toBeTruthy();
 
     // Verify that query has not failed
-    assert(response.body.kind === 'single');
+    expect(response.body.kind).toBe('single');
+
+    // @ts-ignore
     expect(response.body.singleResult.data?.addUserToSystem).toEqual({
       age: 123,
     });
+
+    vi.advanceTimersByTime(3000);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(1);
+
     enqueueSpy.mockRestore();
+    reportMetricsSpy.mockRestore();
   });
 
   it('should collect metrics about query with inline input and arguments,', async () => {
-    const enqueueSpy = jest.spyOn(Queue.prototype, 'enqueue');
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValueOnce();
+
+    const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
 
     const response = await testServer.executeOperation({
       query:
@@ -280,17 +302,24 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
     ).toBeTruthy();
 
     // Verify that query has not failed
-    assert(response.body.kind === 'single');
+    expect(response.body.kind).toBe('single');
+
+    // @ts-ignore
     expect(response.body.singleResult.data?.authorisedUsers).toEqual([
       {
         tracks: [{title: 'title1'}, {title: 'title2'}],
       },
     ]);
+
+    vi.advanceTimersByTime(3000);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(1);
+
     enqueueSpy.mockRestore();
+    reportMetricsSpy.mockRestore();
   });
 
-  it('shoud sent aggregate message to cosmo with multiple schema usage reports', async () => {
-    jest.useFakeTimers(); // Use Jest's fake timers
+  it('should sent aggregate message to cosmo with multiple schema usage reports', async () => {
+   const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValue();
     await testServer.executeOperation({
       query: 'query Me { me { username } }',
     });
@@ -304,11 +333,10 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       query:
         'query MyUsers { authorisedUsers { tracks (first: 10 ) { title } } }',
     });
+    vi.advanceTimersByTime(3000);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(1);
 
-    jest.advanceTimersByTime(3000);
-    expect(cosmoClient.reportMetrics).toHaveBeenCalledTimes(1);
-
-    expect(cosmoClient.reportMetrics).toHaveBeenCalledWith(
+    expect(reportMetricsSpy).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.anything(),
         expect.anything(),

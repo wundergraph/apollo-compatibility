@@ -1,16 +1,14 @@
 {
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-      "types": ["jest", "node"],
-      "baseUrl": ".",
-      "target": "ES2022",
-      "lib": ["es2022"],
-      "sourceMap": true,
-      "outDir": "./dist",
-      "module": "ESNext"
-    },
-    "include": ["src/**/*", "__tests__/**/*"],
-    "exclude": ["node_modules"],
-    "files": ["global.d.ts"]
-  }
-  
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "target": "ES2022",
+    "lib": ["es2022"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "module": "ESNext"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

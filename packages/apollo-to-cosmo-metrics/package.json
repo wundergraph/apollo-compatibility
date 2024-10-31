@@ -30,28 +30,22 @@
     "scripts": {
         "start": "node ./dist/index.js",
         "build": "del dist && tsc",
-        "test": "jest"
+        "test": "tsc -p tsconfig.test.json && vitest run --reporter=default --reporter=hanging-process"
     },
     "dependencies": {
         "@apollo/server": "^4.11.0",
+        "@bufbuild/protobuf": "^1.9.0",
         "@connectrpc/connect": "^1.5.0",
         "@connectrpc/connect-node": "^1.5.0",
         "@esm2cjs/yocto-queue": "^1.0.0",
         "@wundergraph/composition": "^0.29.0",
-        "graphql": "^16.9.0",
-        "prettier-2": "npm:prettier@^2"
+        "graphql": "^16.9.0"
     },
     "devDependencies": {
-        "@babel/preset-env": "^7.25.8",
-        "@jest/globals": "^29.7.0",
-        "@types/jest": "^29.5.13",
-        "@types/lodash": "^4.17.9",
+        "@types/lodash-es": "^4.17.12",
         "@types/node": "^22.7.4",
-        "babel-jest": "^29.7.0",
-        "jest": "^29.7.0",
-        "jest-mock-extended": "^3.0.7",
-        "ts-jest": "^29.2.5",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.6.2"
+        "lodash-es": "^4.17.21",
+        "typescript": "^5.6.2",
+        "vitest": "^2.1.3"
     }
 }
