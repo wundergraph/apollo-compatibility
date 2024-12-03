@@ -33,7 +33,9 @@ import { type CosmoClient } from './cosmo-client.js';
 const CLIENT_NAME_HEADER = 'apollographql-client-name';
 const CLIENT_VERSION_HEADER = 'apollographql-client-version';
 const INTERVAL_TO_FLASH_IN_MS = 20_000;
+const DEFAULT_MAX_QUEUE_SIZE = 10_000;
 
+let isProcessingReports = false;
 let reportQueue: Queue<SchemaUsageInfoAggregation>;
 
 export interface Context {}
@@ -41,6 +43,7 @@ export interface Context {}
 export function cosmoReportPlugin(
   client: CosmoClient,
   reportIntervalMs: number = INTERVAL_TO_FLASH_IN_MS,
+  maxQueueSize: number = DEFAULT_MAX_QUEUE_SIZE,
 ): ApolloServerPlugin<Context> {
   const cosmoClient = client;
   return {
@@ -67,6 +70,9 @@ export function cosmoReportPlugin(
           try {
             const metrics = collectMetrics(context, context.operation.selectionSet);
             enqueueMetrics(context, metrics);
+            if (reportQueue.size >= maxQueueSize) {
+              void processReports(cosmoClient);
+            }
           } catch (error: unknown) {
             const query = context.source.replaceAll(/(\r\n|\n|\r)/gm, '');
             const { variables } = context.request;
@@ -80,21 +86,26 @@ export function cosmoReportPlugin(
 }
 
 async function processReports(cosmoClient: CosmoClient) {
+  if (isProcessingReports) {
+    return;
+  }
+  isProcessingReports = true;
+
   const reports: SchemaUsageInfoAggregation[] = [];
-  for (let ii = 0; ii < reportQueue.size; ii++) {
+  while (reportQueue.size > 0) {
     const dequeuedItem = reportQueue.dequeue();
     if (dequeuedItem) {
       reports.push(dequeuedItem);
-    } else {
-      break;
     }
   }
 
   if (reports.length === 0) {
+    isProcessingReports = false;
     return;
   }
 
   await cosmoClient.reportMetrics(reports);
+  isProcessingReports = false;
 }
 
 function enqueueMetrics(context: GraphQLRequestContextExecutionDidStart<Context>, metrics: RequestMetrics) {

@@ -307,3 +307,78 @@ function argInArray(expectedArg: Partial<ArgumentUsageInfo>, recieved: ArgumentU
 function inputInArray(expectedInput: Partial<InputUsageInfo>, recieved: InputUsageInfo[]): boolean {
   return recieved.some((input) => isMatch(input, expectedInput));
 }
+
+describe('Cosmo report plugin: reporting mechanisms', () => {
+  const maxQueueSize = 100;
+  let testServer: ApolloServer<Context>;
+  let cosmoClient: CosmoClient;
+  let plugin: ApolloServerPlugin<Context>;
+
+  beforeEach(async () => {
+    vi.useFakeTimers();
+    cosmoClient = new CosmoClient({
+      endpointUrl: 'https://cosmo-metrics.wundergraph.com',
+      routerToken: 'secret',
+    });
+    plugin = cosmoReportPlugin(cosmoClient, 10000, maxQueueSize);
+    testServer = new ApolloServer<Context>({
+      typeDefs,
+      resolvers,
+      plugins: [plugin],
+    });
+  });
+
+  afterEach(async () => {
+    await testServer.stop(); // Stops interval
+  });
+
+  it('should execute 100 operations and ensure report is called just once', async () => {
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValue();
+    const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
+
+    const promises: Promise<any>[] = [];
+    for (let i = 0; i < 50; i++) {
+      promises.push(
+        testServer.executeOperation({
+          query: 'query Me { me { username } }',
+        }),
+      );
+    }
+    await Promise.allSettled(promises);
+
+    vi.advanceTimersByTime(10000);
+
+    expect(enqueueSpy).toHaveBeenCalledTimes(50);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(1);
+
+    enqueueSpy.mockRestore();
+    reportMetricsSpy.mockRestore();
+  });
+
+  it('should send report when the queue is full', async () => {
+    testServer = new ApolloServer<Context>({
+      typeDefs,
+      resolvers,
+      plugins: [plugin],
+    });
+
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValue();
+    const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
+
+    const promises: Promise<any>[] = [];
+    for (let i = 0; i < 200; i++) {
+      promises.push(
+        testServer.executeOperation({
+          query: 'query Me { me { username } }',
+        }),
+      );
+    }
+    await Promise.allSettled(promises);
+
+    vi.advanceTimersByTime(3000);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(2);
+
+    enqueueSpy.mockRestore();
+    reportMetricsSpy.mockRestore();
+  });
+});
