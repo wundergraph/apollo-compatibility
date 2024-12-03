@@ -35,7 +35,7 @@ const CLIENT_VERSION_HEADER = 'apollographql-client-version';
 const INTERVAL_TO_FLASH_IN_MS = 20_000;
 const DEFAULT_MAX_QUEUE_SIZE = 10_000;
 
-let isProcessingReports = false;
+let isReadingReports = false;
 let reportQueue: Queue<SchemaUsageInfoAggregation>;
 
 export interface Context {}
@@ -46,11 +46,13 @@ export function cosmoReportPlugin(
   maxQueueSize: number = DEFAULT_MAX_QUEUE_SIZE,
 ): ApolloServerPlugin<Context> {
   const cosmoClient = client;
+  let interval: NodeJS.Timeout;
+
   return {
     async serverWillStart() {
       reportQueue = new Queue();
 
-      const interval = setInterval(async () => processReports(cosmoClient), reportIntervalMs);
+      interval = setInterval(async () => processReports(cosmoClient), reportIntervalMs);
 
       return {
         async serverWillStop() {
@@ -72,6 +74,8 @@ export function cosmoReportPlugin(
             enqueueMetrics(context, metrics);
             if (reportQueue.size >= maxQueueSize) {
               void processReports(cosmoClient);
+              clearInterval(interval);
+              interval = setInterval(async () => processReports(cosmoClient), reportIntervalMs);
             }
           } catch (error: unknown) {
             const query = context.source.replaceAll(/(\r\n|\n|\r)/gm, '');
@@ -86,10 +90,10 @@ export function cosmoReportPlugin(
 }
 
 async function processReports(cosmoClient: CosmoClient) {
-  if (isProcessingReports) {
+  if (isReadingReports) {
     return;
   }
-  isProcessingReports = true;
+  isReadingReports = true;
 
   const reports: SchemaUsageInfoAggregation[] = [];
   while (reportQueue.size > 0) {
@@ -100,12 +104,12 @@ async function processReports(cosmoClient: CosmoClient) {
   }
 
   if (reports.length === 0) {
-    isProcessingReports = false;
+    isReadingReports = false;
     return;
   }
 
+  isReadingReports = false;
   await cosmoClient.reportMetrics(reports);
-  isProcessingReports = false;
 }
 
 function enqueueMetrics(context: GraphQLRequestContextExecutionDidStart<Context>, metrics: RequestMetrics) {
