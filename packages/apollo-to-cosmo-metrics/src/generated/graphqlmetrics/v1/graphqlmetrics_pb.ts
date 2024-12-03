@@ -5,8 +5,15 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import type {
+  BinaryReadOptions,
+  FieldList,
+  JsonReadOptions,
+  JsonValue,
+  PartialMessage,
+  PlainMessage,
+} from '@bufbuild/protobuf';
+import { Message, proto3, protoInt64 } from '@bufbuild/protobuf';
 
 /**
  * @generated from enum wg.cosmo.graphqlmetrics.v1.OperationType
@@ -28,10 +35,10 @@ export enum OperationType {
   SUBSCRIPTION = 2,
 }
 // Retrieve enum metadata with: proto3.getEnumType(OperationType)
-proto3.util.setEnumType(OperationType, "wg.cosmo.graphqlmetrics.v1.OperationType", [
-  { no: 0, name: "QUERY" },
-  { no: 1, name: "MUTATION" },
-  { no: 2, name: "SUBSCRIPTION" },
+proto3.util.setEnumType(OperationType, 'wg.cosmo.graphqlmetrics.v1.OperationType', [
+  { no: 0, name: 'QUERY' },
+  { no: 1, name: 'MUTATION' },
+  { no: 2, name: 'SUBSCRIPTION' },
 ]);
 
 /**
@@ -54,10 +61,10 @@ export class RequestInfo extends Message<RequestInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.RequestInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.RequestInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "StatusCode", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 2, name: "error", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 1, name: 'StatusCode', kind: 'scalar', T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: 'error', kind: 'scalar', T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RequestInfo {
@@ -72,7 +79,10 @@ export class RequestInfo extends Message<RequestInfo> {
     return new RequestInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: RequestInfo | PlainMessage<RequestInfo> | undefined, b: RequestInfo | PlainMessage<RequestInfo> | undefined): boolean {
+  static equals(
+    a: RequestInfo | PlainMessage<RequestInfo> | undefined,
+    b: RequestInfo | PlainMessage<RequestInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(RequestInfo, a, b);
   }
 }
@@ -86,7 +96,7 @@ export class SchemaUsageInfo extends Message<SchemaUsageInfo> {
    *
    * @generated from field: string RequestDocument = 1;
    */
-  RequestDocument = "";
+  RequestDocument = '';
 
   /**
    * TypeFieldMetrics is the list of used fields in the request document
@@ -150,17 +160,23 @@ export class SchemaUsageInfo extends Message<SchemaUsageInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.SchemaUsageInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.SchemaUsageInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "RequestDocument", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "TypeFieldMetrics", kind: "message", T: TypeFieldUsageInfo, repeated: true },
-    { no: 3, name: "OperationInfo", kind: "message", T: OperationInfo },
-    { no: 4, name: "SchemaInfo", kind: "message", T: SchemaInfo },
-    { no: 5, name: "ClientInfo", kind: "message", T: ClientInfo },
-    { no: 6, name: "RequestInfo", kind: "message", T: RequestInfo },
-    { no: 7, name: "Attributes", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "scalar", T: 9 /* ScalarType.STRING */} },
-    { no: 8, name: "ArgumentMetrics", kind: "message", T: ArgumentUsageInfo, repeated: true },
-    { no: 9, name: "InputMetrics", kind: "message", T: InputUsageInfo, repeated: true },
+    { no: 1, name: 'RequestDocument', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: 'TypeFieldMetrics', kind: 'message', T: TypeFieldUsageInfo, repeated: true },
+    { no: 3, name: 'OperationInfo', kind: 'message', T: OperationInfo },
+    { no: 4, name: 'SchemaInfo', kind: 'message', T: SchemaInfo },
+    { no: 5, name: 'ClientInfo', kind: 'message', T: ClientInfo },
+    { no: 6, name: 'RequestInfo', kind: 'message', T: RequestInfo },
+    {
+      no: 7,
+      name: 'Attributes',
+      kind: 'map',
+      K: 9 /* ScalarType.STRING */,
+      V: { kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    },
+    { no: 8, name: 'ArgumentMetrics', kind: 'message', T: ArgumentUsageInfo, repeated: true },
+    { no: 9, name: 'InputMetrics', kind: 'message', T: InputUsageInfo, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SchemaUsageInfo {
@@ -175,7 +191,10 @@ export class SchemaUsageInfo extends Message<SchemaUsageInfo> {
     return new SchemaUsageInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: SchemaUsageInfo | PlainMessage<SchemaUsageInfo> | undefined, b: SchemaUsageInfo | PlainMessage<SchemaUsageInfo> | undefined): boolean {
+  static equals(
+    a: SchemaUsageInfo | PlainMessage<SchemaUsageInfo> | undefined,
+    b: SchemaUsageInfo | PlainMessage<SchemaUsageInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(SchemaUsageInfo, a, b);
   }
 }
@@ -200,10 +219,10 @@ export class SchemaUsageInfoAggregation extends Message<SchemaUsageInfoAggregati
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.SchemaUsageInfoAggregation";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.SchemaUsageInfoAggregation';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "SchemaUsage", kind: "message", T: SchemaUsageInfo },
-    { no: 2, name: "RequestCount", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 1, name: 'SchemaUsage', kind: 'message', T: SchemaUsageInfo },
+    { no: 2, name: 'RequestCount', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SchemaUsageInfoAggregation {
@@ -218,7 +237,10 @@ export class SchemaUsageInfoAggregation extends Message<SchemaUsageInfoAggregati
     return new SchemaUsageInfoAggregation().fromJsonString(jsonString, options);
   }
 
-  static equals(a: SchemaUsageInfoAggregation | PlainMessage<SchemaUsageInfoAggregation> | undefined, b: SchemaUsageInfoAggregation | PlainMessage<SchemaUsageInfoAggregation> | undefined): boolean {
+  static equals(
+    a: SchemaUsageInfoAggregation | PlainMessage<SchemaUsageInfoAggregation> | undefined,
+    b: SchemaUsageInfoAggregation | PlainMessage<SchemaUsageInfoAggregation> | undefined,
+  ): boolean {
     return proto3.util.equals(SchemaUsageInfoAggregation, a, b);
   }
 }
@@ -232,14 +254,14 @@ export class ClientInfo extends Message<ClientInfo> {
    *
    * @generated from field: string Name = 1;
    */
-  Name = "";
+  Name = '';
 
   /**
    * Version is the GraphQL client version obtained from the request header
    *
    * @generated from field: string Version = 2;
    */
-  Version = "";
+  Version = '';
 
   constructor(data?: PartialMessage<ClientInfo>) {
     super();
@@ -247,10 +269,10 @@ export class ClientInfo extends Message<ClientInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.ClientInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.ClientInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "Name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "Version", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: 'Name', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: 'Version', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ClientInfo {
@@ -265,7 +287,10 @@ export class ClientInfo extends Message<ClientInfo> {
     return new ClientInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: ClientInfo | PlainMessage<ClientInfo> | undefined, b: ClientInfo | PlainMessage<ClientInfo> | undefined): boolean {
+  static equals(
+    a: ClientInfo | PlainMessage<ClientInfo> | undefined,
+    b: ClientInfo | PlainMessage<ClientInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(ClientInfo, a, b);
   }
 }
@@ -279,14 +304,14 @@ export class OperationInfo extends Message<OperationInfo> {
    *
    * @generated from field: string Hash = 1;
    */
-  Hash = "";
+  Hash = '';
 
   /**
    * Name is the operation name
    *
    * @generated from field: string Name = 2;
    */
-  Name = "";
+  Name = '';
 
   /**
    * Type is the operation type
@@ -301,11 +326,11 @@ export class OperationInfo extends Message<OperationInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.OperationInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.OperationInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "Hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "Name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "Type", kind: "enum", T: proto3.getEnumType(OperationType) },
+    { no: 1, name: 'Hash', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: 'Name', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: 'Type', kind: 'enum', T: proto3.getEnumType(OperationType) },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OperationInfo {
@@ -320,7 +345,10 @@ export class OperationInfo extends Message<OperationInfo> {
     return new OperationInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: OperationInfo | PlainMessage<OperationInfo> | undefined, b: OperationInfo | PlainMessage<OperationInfo> | undefined): boolean {
+  static equals(
+    a: OperationInfo | PlainMessage<OperationInfo> | undefined,
+    b: OperationInfo | PlainMessage<OperationInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(OperationInfo, a, b);
   }
 }
@@ -336,7 +364,7 @@ export class SchemaInfo extends Message<SchemaInfo> {
    *
    * @generated from field: string Version = 3;
    */
-  Version = "";
+  Version = '';
 
   constructor(data?: PartialMessage<SchemaInfo>) {
     super();
@@ -344,9 +372,9 @@ export class SchemaInfo extends Message<SchemaInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.SchemaInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.SchemaInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 3, name: "Version", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: 'Version', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SchemaInfo {
@@ -361,7 +389,10 @@ export class SchemaInfo extends Message<SchemaInfo> {
     return new SchemaInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: SchemaInfo | PlainMessage<SchemaInfo> | undefined, b: SchemaInfo | PlainMessage<SchemaInfo> | undefined): boolean {
+  static equals(
+    a: SchemaInfo | PlainMessage<SchemaInfo> | undefined,
+    b: SchemaInfo | PlainMessage<SchemaInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(SchemaInfo, a, b);
   }
 }
@@ -403,7 +434,7 @@ export class TypeFieldUsageInfo extends Message<TypeFieldUsageInfo> {
    *
    * @generated from field: string NamedType = 5;
    */
-  NamedType = "";
+  NamedType = '';
 
   /**
    * IndirectInterfaceField is true if the field is an interface field that is used through an implementing type
@@ -418,14 +449,14 @@ export class TypeFieldUsageInfo extends Message<TypeFieldUsageInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.TypeFieldUsageInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.TypeFieldUsageInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "Path", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 2, name: "TypeNames", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 3, name: "SubgraphIDs", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 4, name: "Count", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 5, name: "NamedType", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 6, name: "IndirectInterfaceField", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 1, name: 'Path', kind: 'scalar', T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: 'TypeNames', kind: 'scalar', T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 3, name: 'SubgraphIDs', kind: 'scalar', T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: 'Count', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
+    { no: 5, name: 'NamedType', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: 'IndirectInterfaceField', kind: 'scalar', T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TypeFieldUsageInfo {
@@ -440,7 +471,10 @@ export class TypeFieldUsageInfo extends Message<TypeFieldUsageInfo> {
     return new TypeFieldUsageInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: TypeFieldUsageInfo | PlainMessage<TypeFieldUsageInfo> | undefined, b: TypeFieldUsageInfo | PlainMessage<TypeFieldUsageInfo> | undefined): boolean {
+  static equals(
+    a: TypeFieldUsageInfo | PlainMessage<TypeFieldUsageInfo> | undefined,
+    b: TypeFieldUsageInfo | PlainMessage<TypeFieldUsageInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(TypeFieldUsageInfo, a, b);
   }
 }
@@ -461,7 +495,7 @@ export class ArgumentUsageInfo extends Message<ArgumentUsageInfo> {
    *
    * @generated from field: string TypeName = 2;
    */
-  TypeName = "";
+  TypeName = '';
 
   /**
    * Count is the number of times the argument is used. Useful for batching at client side.
@@ -475,7 +509,7 @@ export class ArgumentUsageInfo extends Message<ArgumentUsageInfo> {
    *
    * @generated from field: string NamedType = 4;
    */
-  NamedType = "";
+  NamedType = '';
 
   constructor(data?: PartialMessage<ArgumentUsageInfo>) {
     super();
@@ -483,12 +517,12 @@ export class ArgumentUsageInfo extends Message<ArgumentUsageInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.ArgumentUsageInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.ArgumentUsageInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "Path", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 2, name: "TypeName", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "Count", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 4, name: "NamedType", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: 'Path', kind: 'scalar', T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: 'TypeName', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: 'Count', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
+    { no: 4, name: 'NamedType', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ArgumentUsageInfo {
@@ -503,7 +537,10 @@ export class ArgumentUsageInfo extends Message<ArgumentUsageInfo> {
     return new ArgumentUsageInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: ArgumentUsageInfo | PlainMessage<ArgumentUsageInfo> | undefined, b: ArgumentUsageInfo | PlainMessage<ArgumentUsageInfo> | undefined): boolean {
+  static equals(
+    a: ArgumentUsageInfo | PlainMessage<ArgumentUsageInfo> | undefined,
+    b: ArgumentUsageInfo | PlainMessage<ArgumentUsageInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(ArgumentUsageInfo, a, b);
   }
 }
@@ -524,7 +561,7 @@ export class InputUsageInfo extends Message<InputUsageInfo> {
    *
    * @generated from field: string TypeName = 2;
    */
-  TypeName = "";
+  TypeName = '';
 
   /**
    * Count is the number of times the argument is used. Useful for batching at client side.
@@ -538,7 +575,7 @@ export class InputUsageInfo extends Message<InputUsageInfo> {
    *
    * @generated from field: string NamedType = 4;
    */
-  NamedType = "";
+  NamedType = '';
 
   /**
    * EnumValues is an empty list if the input field is not an enum, otherwise it contains the list of used enum values
@@ -553,13 +590,13 @@ export class InputUsageInfo extends Message<InputUsageInfo> {
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.InputUsageInfo";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.InputUsageInfo';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "Path", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 2, name: "TypeName", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "Count", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
-    { no: 4, name: "NamedType", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "EnumValues", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: 'Path', kind: 'scalar', T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: 'TypeName', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: 'Count', kind: 'scalar', T: 4 /* ScalarType.UINT64 */ },
+    { no: 4, name: 'NamedType', kind: 'scalar', T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: 'EnumValues', kind: 'scalar', T: 9 /* ScalarType.STRING */, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InputUsageInfo {
@@ -574,7 +611,10 @@ export class InputUsageInfo extends Message<InputUsageInfo> {
     return new InputUsageInfo().fromJsonString(jsonString, options);
   }
 
-  static equals(a: InputUsageInfo | PlainMessage<InputUsageInfo> | undefined, b: InputUsageInfo | PlainMessage<InputUsageInfo> | undefined): boolean {
+  static equals(
+    a: InputUsageInfo | PlainMessage<InputUsageInfo> | undefined,
+    b: InputUsageInfo | PlainMessage<InputUsageInfo> | undefined,
+  ): boolean {
     return proto3.util.equals(InputUsageInfo, a, b);
   }
 }
@@ -594,9 +634,9 @@ export class PublishGraphQLRequestMetricsRequest extends Message<PublishGraphQLR
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.PublishGraphQLRequestMetricsRequest";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.PublishGraphQLRequestMetricsRequest';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "SchemaUsage", kind: "message", T: SchemaUsageInfo, repeated: true },
+    { no: 1, name: 'SchemaUsage', kind: 'message', T: SchemaUsageInfo, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PublishGraphQLRequestMetricsRequest {
@@ -611,7 +651,10 @@ export class PublishGraphQLRequestMetricsRequest extends Message<PublishGraphQLR
     return new PublishGraphQLRequestMetricsRequest().fromJsonString(jsonString, options);
   }
 
-  static equals(a: PublishGraphQLRequestMetricsRequest | PlainMessage<PublishGraphQLRequestMetricsRequest> | undefined, b: PublishGraphQLRequestMetricsRequest | PlainMessage<PublishGraphQLRequestMetricsRequest> | undefined): boolean {
+  static equals(
+    a: PublishGraphQLRequestMetricsRequest | PlainMessage<PublishGraphQLRequestMetricsRequest> | undefined,
+    b: PublishGraphQLRequestMetricsRequest | PlainMessage<PublishGraphQLRequestMetricsRequest> | undefined,
+  ): boolean {
     return proto3.util.equals(PublishGraphQLRequestMetricsRequest, a, b);
   }
 }
@@ -626,9 +669,8 @@ export class PublishOperationCoverageReportResponse extends Message<PublishOpera
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.PublishOperationCoverageReportResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-  ]);
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.PublishOperationCoverageReportResponse';
+  static readonly fields: FieldList = proto3.util.newFieldList(() => []);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PublishOperationCoverageReportResponse {
     return new PublishOperationCoverageReportResponse().fromBinary(bytes, options);
@@ -638,11 +680,17 @@ export class PublishOperationCoverageReportResponse extends Message<PublishOpera
     return new PublishOperationCoverageReportResponse().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PublishOperationCoverageReportResponse {
+  static fromJsonString(
+    jsonString: string,
+    options?: Partial<JsonReadOptions>,
+  ): PublishOperationCoverageReportResponse {
     return new PublishOperationCoverageReportResponse().fromJsonString(jsonString, options);
   }
 
-  static equals(a: PublishOperationCoverageReportResponse | PlainMessage<PublishOperationCoverageReportResponse> | undefined, b: PublishOperationCoverageReportResponse | PlainMessage<PublishOperationCoverageReportResponse> | undefined): boolean {
+  static equals(
+    a: PublishOperationCoverageReportResponse | PlainMessage<PublishOperationCoverageReportResponse> | undefined,
+    b: PublishOperationCoverageReportResponse | PlainMessage<PublishOperationCoverageReportResponse> | undefined,
+  ): boolean {
     return proto3.util.equals(PublishOperationCoverageReportResponse, a, b);
   }
 }
@@ -662,24 +710,42 @@ export class PublishAggregatedGraphQLRequestMetricsRequest extends Message<Publi
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.PublishAggregatedGraphQLRequestMetricsRequest";
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.PublishAggregatedGraphQLRequestMetricsRequest';
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "Aggregation", kind: "message", T: SchemaUsageInfoAggregation, repeated: true },
+    { no: 1, name: 'Aggregation', kind: 'message', T: SchemaUsageInfoAggregation, repeated: true },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PublishAggregatedGraphQLRequestMetricsRequest {
+  static fromBinary(
+    bytes: Uint8Array,
+    options?: Partial<BinaryReadOptions>,
+  ): PublishAggregatedGraphQLRequestMetricsRequest {
     return new PublishAggregatedGraphQLRequestMetricsRequest().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PublishAggregatedGraphQLRequestMetricsRequest {
+  static fromJson(
+    jsonValue: JsonValue,
+    options?: Partial<JsonReadOptions>,
+  ): PublishAggregatedGraphQLRequestMetricsRequest {
     return new PublishAggregatedGraphQLRequestMetricsRequest().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PublishAggregatedGraphQLRequestMetricsRequest {
+  static fromJsonString(
+    jsonString: string,
+    options?: Partial<JsonReadOptions>,
+  ): PublishAggregatedGraphQLRequestMetricsRequest {
     return new PublishAggregatedGraphQLRequestMetricsRequest().fromJsonString(jsonString, options);
   }
 
-  static equals(a: PublishAggregatedGraphQLRequestMetricsRequest | PlainMessage<PublishAggregatedGraphQLRequestMetricsRequest> | undefined, b: PublishAggregatedGraphQLRequestMetricsRequest | PlainMessage<PublishAggregatedGraphQLRequestMetricsRequest> | undefined): boolean {
+  static equals(
+    a:
+      | PublishAggregatedGraphQLRequestMetricsRequest
+      | PlainMessage<PublishAggregatedGraphQLRequestMetricsRequest>
+      | undefined,
+    b:
+      | PublishAggregatedGraphQLRequestMetricsRequest
+      | PlainMessage<PublishAggregatedGraphQLRequestMetricsRequest>
+      | undefined,
+  ): boolean {
     return proto3.util.equals(PublishAggregatedGraphQLRequestMetricsRequest, a, b);
   }
 }
@@ -694,24 +760,40 @@ export class PublishAggregatedGraphQLRequestMetricsResponse extends Message<Publ
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "wg.cosmo.graphqlmetrics.v1.PublishAggregatedGraphQLRequestMetricsResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-  ]);
+  static readonly typeName = 'wg.cosmo.graphqlmetrics.v1.PublishAggregatedGraphQLRequestMetricsResponse';
+  static readonly fields: FieldList = proto3.util.newFieldList(() => []);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PublishAggregatedGraphQLRequestMetricsResponse {
+  static fromBinary(
+    bytes: Uint8Array,
+    options?: Partial<BinaryReadOptions>,
+  ): PublishAggregatedGraphQLRequestMetricsResponse {
     return new PublishAggregatedGraphQLRequestMetricsResponse().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PublishAggregatedGraphQLRequestMetricsResponse {
+  static fromJson(
+    jsonValue: JsonValue,
+    options?: Partial<JsonReadOptions>,
+  ): PublishAggregatedGraphQLRequestMetricsResponse {
     return new PublishAggregatedGraphQLRequestMetricsResponse().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PublishAggregatedGraphQLRequestMetricsResponse {
+  static fromJsonString(
+    jsonString: string,
+    options?: Partial<JsonReadOptions>,
+  ): PublishAggregatedGraphQLRequestMetricsResponse {
     return new PublishAggregatedGraphQLRequestMetricsResponse().fromJsonString(jsonString, options);
   }
 
-  static equals(a: PublishAggregatedGraphQLRequestMetricsResponse | PlainMessage<PublishAggregatedGraphQLRequestMetricsResponse> | undefined, b: PublishAggregatedGraphQLRequestMetricsResponse | PlainMessage<PublishAggregatedGraphQLRequestMetricsResponse> | undefined): boolean {
+  static equals(
+    a:
+      | PublishAggregatedGraphQLRequestMetricsResponse
+      | PlainMessage<PublishAggregatedGraphQLRequestMetricsResponse>
+      | undefined,
+    b:
+      | PublishAggregatedGraphQLRequestMetricsResponse
+      | PlainMessage<PublishAggregatedGraphQLRequestMetricsResponse>
+      | undefined,
+  ): boolean {
     return proto3.util.equals(PublishAggregatedGraphQLRequestMetricsResponse, a, b);
   }
 }
-

@@ -19,7 +19,7 @@ import { SchemaLoader } from '@wundergraph/cosmo-to-apollo-schema';
 
 // 2. Configure with file, cdn or s3
 const cosmoSchemaLoader = new SchemaLoader({
-  filePath: "./cosmo-config.json",
+  filePath: './cosmo-config.json',
 });
 
 // 3. Pass it to the gateway subgraphSdl
@@ -31,7 +31,7 @@ const server = new ApolloServer({
   gateway,
 });
 
-startStandaloneServer(server)
+startStandaloneServer(server);
 ```
 
 ## Loader Options
@@ -61,7 +61,7 @@ interface CDNOptions {
 }
 ```
 
-`endpoint`: The url to the cdn. (default https://cosmo-cdn.wundergraph.com). 
+`endpoint`: The url to the cdn. (default https://cosmo-cdn.wundergraph.com).
 
 `token`: The token for your Federated Graph. You can generate one with the [token create command](https://cosmo-docs.wundergraph.com/cli/router/token/create).
 
@@ -83,7 +83,7 @@ dotenv.config();
 // Fetches from Cosmo Cloud CDN by default
 const cosmoSchemaLoader = new SchemaLoader({
   cdn: {
-    // Token for your federated graph on cosmo. 
+    // Token for your federated graph on cosmo.
     token: process.env.GRAPH_TOKEN,
   },
   pollInterval: 3000,
@@ -107,7 +107,7 @@ startStandaloneServer(server).then(({ url }) => {
 The plugin watches for any config file changes for the provided path and updates the sdl accordingly.
 
 ```ts
-filePath: string
+filePath: string;
 ```
 
 ## S3
