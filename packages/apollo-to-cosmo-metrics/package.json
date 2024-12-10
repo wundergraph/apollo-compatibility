@@ -1,7 +1,7 @@
 {
   "name": "@wundergraph/apollo-to-cosmo-metrics",
   "description": "An apollo gateway plugin that exports schema usage metrics to cosmo",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": {
     "name": "WunderGraph Maintainers",
     "email": "info@wundergraph.com"
