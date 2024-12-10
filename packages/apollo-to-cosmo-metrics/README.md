@@ -33,18 +33,16 @@ const gateway = new ApolloGateway({
 
 // Plugin definition
 const cosmoReportPlugin = cosmoReportPlugin(
-    new CosmoClient({
-      endpointUrl: 'https://cosmo-metrics.wundergraph.com',
-      routerToken: 'router-token',
-    }),
-  );
+  new CosmoClient({
+    endpointUrl: 'https://cosmo-metrics.wundergraph.com',
+    routerToken: 'router-token',
+  }),
+);
 
 const server = new ApolloServer({
   gateway,
   plugins: [cosmoReportPlugin],
 });
 
-startStandaloneServer(server)
-
+startStandaloneServer(server);
 ```
-

@@ -28,12 +28,14 @@ import {
   SchemaUsageInfoAggregation,
   TypeFieldUsageInfo,
 } from '../generated/graphqlmetrics/v1/graphqlmetrics_pb.js';
-import {type CosmoClient} from './cosmo-client.js';
+import { type CosmoClient } from './cosmo-client.js';
 
 const CLIENT_NAME_HEADER = 'apollographql-client-name';
 const CLIENT_VERSION_HEADER = 'apollographql-client-version';
 const INTERVAL_TO_FLASH_IN_MS = 20_000;
+const DEFAULT_MAX_QUEUE_SIZE = 10_000;
 
+let isReadingReports = false;
 let reportQueue: Queue<SchemaUsageInfoAggregation>;
 
 export interface Context {}
@@ -41,16 +43,16 @@ export interface Context {}
 export function cosmoReportPlugin(
   client: CosmoClient,
   reportIntervalMs: number = INTERVAL_TO_FLASH_IN_MS,
+  maxQueueSize: number = DEFAULT_MAX_QUEUE_SIZE,
 ): ApolloServerPlugin<Context> {
   const cosmoClient = client;
+  let interval: NodeJS.Timeout;
+
   return {
     async serverWillStart() {
       reportQueue = new Queue();
 
-      const interval = setInterval(
-        async () => processReports(cosmoClient),
-        reportIntervalMs,
-      );
+      interval = setInterval(async () => processReports(cosmoClient), reportIntervalMs);
 
       return {
         async serverWillStop() {
@@ -61,29 +63,25 @@ export function cosmoReportPlugin(
     },
     async requestDidStart() {
       return {
-        async executionDidStart(
-          context: GraphQLRequestContextExecutionDidStart<Context>,
-        ) {
+        async executionDidStart(context: GraphQLRequestContextExecutionDidStart<Context>) {
           // Should we report all operations?
           if (context.operationName === 'IntrospectionQuery') {
             return;
           }
 
           try {
-            const metrics = collectMetrics(
-              context,
-              context.operation.selectionSet,
-            );
+            const metrics = collectMetrics(context, context.operation.selectionSet);
             enqueueMetrics(context, metrics);
+            if (reportQueue.size >= maxQueueSize) {
+              void processReports(cosmoClient);
+              clearInterval(interval);
+              interval = setInterval(async () => processReports(cosmoClient), reportIntervalMs);
+            }
           } catch (error: unknown) {
             const query = context.source.replaceAll(/(\r\n|\n|\r)/gm, '');
-            const {variables} = context.request;
-            const errorMessage =
-              error instanceof Error ? error.message : String(error);
-            console.error(
-              {errorMessage, query, variables},
-              'Cosmo Usage Report Plugin has failed on query',
-            );
+            const { variables } = context.request;
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error({ errorMessage, query, variables }, 'Cosmo Usage Report Plugin has failed on query');
           }
         },
       };
@@ -92,27 +90,29 @@ export function cosmoReportPlugin(
 }
 
 async function processReports(cosmoClient: CosmoClient) {
+  if (isReadingReports) {
+    return;
+  }
+  isReadingReports = true;
+
   const reports: SchemaUsageInfoAggregation[] = [];
-  for (let ii = 0; ii < reportQueue.size; ii++) {
+  while (reportQueue.size > 0) {
     const dequeuedItem = reportQueue.dequeue();
     if (dequeuedItem) {
       reports.push(dequeuedItem);
-    } else {
-      break;
     }
   }
 
   if (reports.length === 0) {
+    isReadingReports = false;
     return;
   }
 
+  isReadingReports = false;
   await cosmoClient.reportMetrics(reports);
 }
 
-function enqueueMetrics(
-  context: GraphQLRequestContextExecutionDidStart<Context>,
-  metrics: RequestMetrics,
-) {
+function enqueueMetrics(context: GraphQLRequestContextExecutionDidStart<Context>, metrics: RequestMetrics) {
   const operationInfo = new OperationInfo({
     Hash: context.queryHash,
     Name: context.operationName!,
@@ -133,7 +133,7 @@ function enqueueMetrics(
       OperationInfo: operationInfo,
       ClientInfo: getClientInfo(context.request),
       RequestInfo: requestInfo,
-      SchemaInfo: new SchemaInfo({Version: 'v1'}),
+      SchemaInfo: new SchemaInfo({ Version: 'v1' }),
     }),
     RequestCount: BigInt(1),
   });
@@ -177,28 +177,21 @@ function collectMetrics(
   if (!selectionSet) return metrics;
 
   for (const selection of selectionSet.selections) {
-    if (
-      selection.kind === Kind.FIELD &&
-      selection.name.value !== '__typename'
-    ) {
+    if (selection.kind === Kind.FIELD && selection.name.value !== '__typename') {
       const updatedPath = [...path, selection.name.value];
       let namedType: string;
       let typeName: string;
 
       if (objectType) {
-        const fieldDef = objectType.astNode!.fields!.find(
-          (f) => f.name.value === selection.name.value,
-        )!;
+        const fieldDef = objectType.astNode!.fields!.find((f) => f.name.value === selection.name.value)!;
         namedType = inferNamedType(fieldDef.type);
         typeName = objectType.name;
       } else {
-        const {operation} = context.operation;
+        const { operation } = context.operation;
         const rootFieldDef =
           operation === OperationTypeNode.QUERY
             ? context.schema.getQueryType()?.getFields()[selection.name.value]
-            : context.schema.getMutationType()?.getFields()[
-                selection.name.value
-              ];
+            : context.schema.getMutationType()?.getFields()[selection.name.value];
 
         if (!rootFieldDef) return metrics;
         namedType = inferNamedType(rootFieldDef.astNode!.type);
@@ -215,9 +208,7 @@ function collectMetrics(
       );
 
       if (selection.arguments?.length) {
-        metrics.append(
-          collectArguments(context, updatedPath, selection, typeName),
-        );
+        metrics.append(collectArguments(context, updatedPath, selection, typeName));
       }
 
       metrics.append(
@@ -228,18 +219,10 @@ function collectMetrics(
           context.schema.getType(namedType) as GraphQLObjectType,
         ),
       );
-    } else if (
-      selection.kind === Kind.INLINE_FRAGMENT &&
-      selection.typeCondition
-    ) {
+    } else if (selection.kind === Kind.INLINE_FRAGMENT && selection.typeCondition) {
       const namedType = selection.typeCondition.name.value;
       metrics.append(
-        collectMetrics(
-          context,
-          selection.selectionSet,
-          path,
-          context.schema.getType(namedType) as GraphQLObjectType,
-        ),
+        collectMetrics(context, selection.selectionSet, path, context.schema.getType(namedType) as GraphQLObjectType),
       );
     }
   }
@@ -258,14 +241,10 @@ function collectArguments(
 
   const typenameObject = context.schema.getType(typeName) as GraphQLObjectType;
   const fieldName = path.at(-1);
-  const fieldDef = typenameObject.astNode!.fields!.find(
-    (f) => f.name.value === fieldName,
-  )!;
+  const fieldDef = typenameObject.astNode!.fields!.find((f) => f.name.value === fieldName)!;
 
   for (const argument of fieldNode.arguments) {
-    const argDef = fieldDef.arguments!.find(
-      (arg) => arg.name.value === argument.name.value,
-    );
+    const argDef = fieldDef.arguments!.find((arg) => arg.name.value === argument.name.value);
 
     if (argDef) {
       metrics.args.push(
@@ -294,11 +273,9 @@ function collectInputs(
 
   if (argument.value.kind === Kind.VARIABLE) {
     // Handle variable input
-    const variableDef: VariableDefinitionNode =
-      context.operation.variableDefinitions!.find(
-        (v) =>
-          v.variable.name.value === (argument.value as VariableNode).name.value,
-      )!;
+    const variableDef: VariableDefinitionNode = context.operation.variableDefinitions!.find(
+      (v) => v.variable.name.value === (argument.value as VariableNode).name.value,
+    )!;
     const variableNamedType = inferNamedType(variableDef.type);
     const varNamedTypeDef = context.schema.getType(variableNamedType)!;
     // Object input

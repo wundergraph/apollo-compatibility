@@ -1,8 +1,8 @@
 import { describe, expect, afterEach, it, vi, beforeEach } from 'vitest';
-import {isMatch} from 'lodash-es';
-import {ApolloServer, type ApolloServerPlugin} from '@apollo/server';
+import { isMatch } from 'lodash-es';
+import { ApolloServer, type ApolloServerPlugin } from '@apollo/server';
 import Queue from '@esm2cjs/yocto-queue';
-import {Context, cosmoReportPlugin, CosmoClient} from '../src/index.js';
+import { Context, cosmoReportPlugin, CosmoClient } from '../src/index.js';
 import {
   ArgumentUsageInfo,
   InputUsageInfo,
@@ -40,17 +40,17 @@ const typeDefs = `#graphql
 const resolvers = {
   Query: {
     async me() {
-      return {username: 'myusername'};
+      return { username: 'myusername' };
     },
 
     async authorisedUsers() {
-      return [{tracks: [{title: 'title1'}, {title: 'title2'}]}];
+      return [{ tracks: [{ title: 'title1' }, { title: 'title2' }] }];
     },
   },
   Mutation: {
     async addUserToSystem(_: any, args: any) {
-      const {age} = args.input; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
-      const {username} = args.input; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+      const { age } = args.input; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+      const { username } = args.input; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
 
       return {
         age: age as number,
@@ -66,11 +66,11 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
   let plugin: ApolloServerPlugin<Context>;
 
   beforeEach(async () => {
-    vi.useFakeTimers()
+    vi.useFakeTimers();
     cosmoClient = new CosmoClient({
       endpointUrl: 'https://cosmo-metrics.wundergraph.com',
       routerToken: 'secret',
-    })
+    });
     plugin = cosmoReportPlugin(cosmoClient, 2000);
     testServer = new ApolloServer<Context>({
       typeDefs,
@@ -91,8 +91,7 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       query: 'query Me { me { username } }',
     });
 
-    const metrics: SchemaUsageInfoAggregation | undefined = // eslint-disable-line @typescript-eslint/no-unsafe-assignment
-      enqueueSpy.mock.calls[0]?.[0];
+    const metrics: SchemaUsageInfoAggregation | undefined = enqueueSpy.mock.calls[0]?.[0]; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
     expect(metrics).toBeDefined();
 
     // Expected field metrics
@@ -110,12 +109,8 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       Count: BigInt(1),
     });
 
-    expect(
-      fieldInArray(me, metrics!.SchemaUsage!.TypeFieldMetrics),
-    ).toBeTruthy();
-    expect(
-      fieldInArray(username, metrics!.SchemaUsage!.TypeFieldMetrics),
-    ).toBeTruthy();
+    expect(fieldInArray(me, metrics!.SchemaUsage!.TypeFieldMetrics)).toBeTruthy();
+    expect(fieldInArray(username, metrics!.SchemaUsage!.TypeFieldMetrics)).toBeTruthy();
 
     // No args or inputs
     expect(metrics!.SchemaUsage!.ArgumentMetrics.length).toEqual(0);
@@ -141,13 +136,11 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
 
     const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
     const response = await testServer.executeOperation({
-      query:
-        'mutation AddUser($input: AddUserInput!) { addUserToSystem(input: $input) {... on User { age } } }',
-      variables: {input: {age: 123, username: 'username123'}},
+      query: 'mutation AddUser($input: AddUserInput!) { addUserToSystem(input: $input) {... on User { age } } }',
+      variables: { input: { age: 123, username: 'username123' } },
     });
 
-    const schemaUsageMessage: SchemaUsageInfoAggregation | undefined = // eslint-disable-line @typescript-eslint/no-unsafe-assignment
-      enqueueSpy.mock.calls[0]?.[0];
+    const schemaUsageMessage: SchemaUsageInfoAggregation | undefined = enqueueSpy.mock.calls[0]?.[0]; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
 
     expect(schemaUsageMessage).toBeDefined();
     expect(schemaUsageMessage!.SchemaUsage?.TypeFieldMetrics.length).toBe(2);
@@ -168,15 +161,8 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       Count: BigInt(1),
     });
 
-    expect(
-      fieldInArray(
-        addUserToSystem,
-        schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics,
-      ),
-    ).toBeTruthy();
-    expect(
-      fieldInArray(age, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics),
-    ).toBeTruthy();
+    expect(fieldInArray(addUserToSystem, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics)).toBeTruthy();
+    expect(fieldInArray(age, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics)).toBeTruthy();
 
     const inputArgument = new ArgumentUsageInfo({
       Path: ['addUserToSystem', 'input'],
@@ -185,12 +171,7 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       Count: BigInt(1),
     });
 
-    expect(
-      argInArray(
-        inputArgument,
-        schemaUsageMessage!.SchemaUsage!.ArgumentMetrics,
-      ),
-    ).toBeTruthy();
+    expect(argInArray(inputArgument, schemaUsageMessage!.SchemaUsage!.ArgumentMetrics)).toBeTruthy();
 
     const ageInput = new InputUsageInfo({
       Path: ['AddUserInput', 'age'],
@@ -204,15 +185,8 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       NamedType: 'String',
     });
 
-    expect(
-      inputInArray(ageInput, schemaUsageMessage!.SchemaUsage!.InputMetrics),
-    ).toBeTruthy();
-    expect(
-      inputInArray(
-        usernameInput,
-        schemaUsageMessage!.SchemaUsage!.InputMetrics,
-      ),
-    ).toBeTruthy();
+    expect(inputInArray(ageInput, schemaUsageMessage!.SchemaUsage!.InputMetrics)).toBeTruthy();
+    expect(inputInArray(usernameInput, schemaUsageMessage!.SchemaUsage!.InputMetrics)).toBeTruthy();
 
     // Verify that query has not failed
     expect(response.body.kind).toBe('single');
@@ -235,12 +209,10 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
     const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
 
     const response = await testServer.executeOperation({
-      query:
-        'query MyUsers { authorisedUsers { tracks (first: 10 ) { title } } }',
+      query: 'query MyUsers { authorisedUsers { tracks (first: 10 ) { title } } }',
     });
 
-    const schemaUsageMessage: SchemaUsageInfoAggregation | undefined = // eslint-disable-line @typescript-eslint/no-unsafe-assignment
-      enqueueSpy.mock.calls[0]?.[0];
+    const schemaUsageMessage: SchemaUsageInfoAggregation | undefined = enqueueSpy.mock.calls[0]?.[0]; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
     expect(schemaUsageMessage).toBeDefined();
 
     const authorisedUsers = new TypeFieldUsageInfo({
@@ -264,18 +236,9 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       Count: BigInt(1),
     });
 
-    expect(
-      fieldInArray(
-        authorisedUsers,
-        schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics,
-      ),
-    ).toBeTruthy();
-    expect(
-      fieldInArray(track, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics),
-    ).toBeTruthy();
-    expect(
-      fieldInArray(title, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics),
-    ).toBeTruthy();
+    expect(fieldInArray(authorisedUsers, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics)).toBeTruthy();
+    expect(fieldInArray(track, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics)).toBeTruthy();
+    expect(fieldInArray(title, schemaUsageMessage!.SchemaUsage!.TypeFieldMetrics)).toBeTruthy();
 
     const firstArgument = new ArgumentUsageInfo({
       Path: ['authorisedUsers', 'tracks'],
@@ -284,12 +247,7 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       Count: BigInt(1),
     });
 
-    expect(
-      argInArray(
-        firstArgument,
-        schemaUsageMessage!.SchemaUsage!.ArgumentMetrics,
-      ),
-    ).toBeTruthy();
+    expect(argInArray(firstArgument, schemaUsageMessage!.SchemaUsage!.ArgumentMetrics)).toBeTruthy();
 
     const firstInput = new InputUsageInfo({
       Path: ['tracks', 'first'],
@@ -297,9 +255,7 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
       Count: BigInt(1),
     });
 
-    expect(
-      inputInArray(firstInput, schemaUsageMessage!.SchemaUsage!.InputMetrics),
-    ).toBeTruthy();
+    expect(inputInArray(firstInput, schemaUsageMessage!.SchemaUsage!.InputMetrics)).toBeTruthy();
 
     // Verify that query has not failed
     expect(response.body.kind).toBe('single');
@@ -307,7 +263,7 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
     // @ts-ignore
     expect(response.body.singleResult.data?.authorisedUsers).toEqual([
       {
-        tracks: [{title: 'title1'}, {title: 'title2'}],
+        tracks: [{ title: 'title1' }, { title: 'title2' }],
       },
     ]);
 
@@ -319,50 +275,110 @@ describe('Cosmo report plugin: metrics collector (fields, arguments, inputs', ()
   });
 
   it('should sent aggregate message to cosmo with multiple schema usage reports', async () => {
-   const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValue();
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValue();
     await testServer.executeOperation({
       query: 'query Me { me { username } }',
     });
 
     await testServer.executeOperation({
-      query:
-        'mutation AddUser($input: AddUserInput!) { addUserToSystem(input: $input) {... on User { age } } }',
-      variables: {input: {age: 123, username: 'username123'}},
+      query: 'mutation AddUser($input: AddUserInput!) { addUserToSystem(input: $input) {... on User { age } } }',
+      variables: { input: { age: 123, username: 'username123' } },
     });
     await testServer.executeOperation({
-      query:
-        'query MyUsers { authorisedUsers { tracks (first: 10 ) { title } } }',
+      query: 'query MyUsers { authorisedUsers { tracks (first: 10 ) { title } } }',
     });
     vi.advanceTimersByTime(3000);
     expect(reportMetricsSpy).toHaveBeenCalledTimes(1);
 
     expect(reportMetricsSpy).toHaveBeenCalledWith(
-      expect.arrayContaining([
-        expect.anything(),
-        expect.anything(),
-        expect.anything(),
-      ]),
+      expect.arrayContaining([expect.anything(), expect.anything(), expect.anything()]),
     );
   });
 });
 
-function fieldInArray(
-  expectedField: Partial<TypeFieldUsageInfo>,
-  recieved: TypeFieldUsageInfo[],
-): boolean {
+function fieldInArray(expectedField: Partial<TypeFieldUsageInfo>, recieved: TypeFieldUsageInfo[]): boolean {
   return recieved.some((field) => isMatch(field, expectedField));
 }
 
-function argInArray(
-  expectedArg: Partial<ArgumentUsageInfo>,
-  recieved: ArgumentUsageInfo[],
-): boolean {
+function argInArray(expectedArg: Partial<ArgumentUsageInfo>, recieved: ArgumentUsageInfo[]): boolean {
   return recieved.some((arg) => isMatch(arg, expectedArg));
 }
 
-function inputInArray(
-  expectedInput: Partial<InputUsageInfo>,
-  recieved: InputUsageInfo[],
-): boolean {
+function inputInArray(expectedInput: Partial<InputUsageInfo>, recieved: InputUsageInfo[]): boolean {
   return recieved.some((input) => isMatch(input, expectedInput));
 }
+
+describe('Cosmo report plugin: reporting mechanisms', () => {
+  const maxQueueSize = 100;
+  let testServer: ApolloServer<Context>;
+  let cosmoClient: CosmoClient;
+  let plugin: ApolloServerPlugin<Context>;
+
+  beforeEach(async () => {
+    vi.useFakeTimers();
+    cosmoClient = new CosmoClient({
+      endpointUrl: 'https://cosmo-metrics.wundergraph.com',
+      routerToken: 'secret',
+    });
+    plugin = cosmoReportPlugin(cosmoClient, 10000, maxQueueSize);
+    testServer = new ApolloServer<Context>({
+      typeDefs,
+      resolvers,
+      plugins: [plugin],
+    });
+  });
+
+  afterEach(async () => {
+    await testServer.stop(); // Stops interval
+  });
+
+  it('should execute 100 operations and ensure report is called just once', async () => {
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValue();
+    const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
+
+    const promises: Promise<any>[] = [];
+    for (let i = 0; i < 50; i++) {
+      promises.push(
+        testServer.executeOperation({
+          query: 'query Me { me { username } }',
+        }),
+      );
+    }
+    await Promise.allSettled(promises);
+
+    vi.advanceTimersByTime(10000);
+
+    expect(enqueueSpy).toHaveBeenCalledTimes(50);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(1);
+
+    enqueueSpy.mockRestore();
+    reportMetricsSpy.mockRestore();
+  });
+
+  it('should send report when the queue is full', async () => {
+    testServer = new ApolloServer<Context>({
+      typeDefs,
+      resolvers,
+      plugins: [plugin],
+    });
+
+    const reportMetricsSpy = vi.spyOn(CosmoClient.prototype, 'reportMetrics').mockResolvedValue();
+    const enqueueSpy = vi.spyOn(Queue.prototype, 'enqueue');
+
+    const promises: Promise<any>[] = [];
+    for (let i = 0; i < 200; i++) {
+      promises.push(
+        testServer.executeOperation({
+          query: 'query Me { me { username } }',
+        }),
+      );
+    }
+    await Promise.allSettled(promises);
+
+    vi.advanceTimersByTime(3000);
+    expect(reportMetricsSpy).toHaveBeenCalledTimes(2);
+
+    enqueueSpy.mockRestore();
+    reportMetricsSpy.mockRestore();
+  });
+});

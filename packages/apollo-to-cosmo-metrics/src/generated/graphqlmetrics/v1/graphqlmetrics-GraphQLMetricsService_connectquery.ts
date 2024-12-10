@@ -5,8 +5,13 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { MethodKind } from "@bufbuild/protobuf";
-import { PublishAggregatedGraphQLRequestMetricsRequest, PublishAggregatedGraphQLRequestMetricsResponse, PublishGraphQLRequestMetricsRequest, PublishOperationCoverageReportResponse } from "./graphqlmetrics_pb.js";
+import { MethodKind } from '@bufbuild/protobuf';
+import {
+  PublishAggregatedGraphQLRequestMetricsRequest,
+  PublishAggregatedGraphQLRequestMetricsResponse,
+  PublishGraphQLRequestMetricsRequest,
+  PublishOperationCoverageReportResponse,
+} from './graphqlmetrics_pb.js';
 
 /**
  * PublishGraphQLMetrics publishes the GraphQL metrics to the metrics service
@@ -14,26 +19,26 @@ import { PublishAggregatedGraphQLRequestMetricsRequest, PublishAggregatedGraphQL
  * @generated from rpc wg.cosmo.graphqlmetrics.v1.GraphQLMetricsService.PublishGraphQLMetrics
  */
 export const publishGraphQLMetrics = {
-  localName: "publishGraphQLMetrics",
-  name: "PublishGraphQLMetrics",
+  localName: 'publishGraphQLMetrics',
+  name: 'PublishGraphQLMetrics',
   kind: MethodKind.Unary,
   I: PublishGraphQLRequestMetricsRequest,
   O: PublishOperationCoverageReportResponse,
   service: {
-    typeName: "wg.cosmo.graphqlmetrics.v1.GraphQLMetricsService"
-  }
+    typeName: 'wg.cosmo.graphqlmetrics.v1.GraphQLMetricsService',
+  },
 } as const;
 
 /**
  * @generated from rpc wg.cosmo.graphqlmetrics.v1.GraphQLMetricsService.PublishAggregatedGraphQLMetrics
  */
 export const publishAggregatedGraphQLMetrics = {
-  localName: "publishAggregatedGraphQLMetrics",
-  name: "PublishAggregatedGraphQLMetrics",
+  localName: 'publishAggregatedGraphQLMetrics',
+  name: 'PublishAggregatedGraphQLMetrics',
   kind: MethodKind.Unary,
   I: PublishAggregatedGraphQLRequestMetricsRequest,
   O: PublishAggregatedGraphQLRequestMetricsResponse,
   service: {
-    typeName: "wg.cosmo.graphqlmetrics.v1.GraphQLMetricsService"
-  }
+    typeName: 'wg.cosmo.graphqlmetrics.v1.GraphQLMetricsService',
+  },
 } as const;

@@ -1,7 +1,7 @@
-import {Client, createClient} from '@connectrpc/connect';
-import {createConnectTransport} from '@connectrpc/connect-node';
-import {GraphQLMetricsService} from '../generated/graphqlmetrics/v1/graphqlmetrics_connect.js';
-import {type SchemaUsageInfoAggregation} from '../generated/graphqlmetrics/v1/graphqlmetrics_pb.js';
+import { Client, createClient } from '@connectrpc/connect';
+import { createConnectTransport } from '@connectrpc/connect-node';
+import { GraphQLMetricsService } from '../generated/graphqlmetrics/v1/graphqlmetrics_connect.js';
+import { type SchemaUsageInfoAggregation } from '../generated/graphqlmetrics/v1/graphqlmetrics_pb.js';
 
 export type CosmoConfig = {
   routerToken: string;
@@ -34,9 +34,7 @@ export class CosmoClient {
     // );
     try {
       await this.client.publishAggregatedGraphQLMetrics(aggregatedReports, {
-        headers: new Headers([
-          ['Authorization', `Bearer ${this.config.routerToken}`],
-        ]),
+        headers: new Headers([['Authorization', `Bearer ${this.config.routerToken}`]]),
       });
     } catch (e) {
       console.error('Error sending metrics to Cosmo', e);
