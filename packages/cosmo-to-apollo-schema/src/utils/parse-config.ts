@@ -1,16 +1,32 @@
 import { composeServices } from '@apollo/composition';
 import { ServiceDefinition } from '@apollo/gateway';
-import { RouterConfig } from '@wundergraph/cosmo-connect/dist/node/v1/node_pb';
 import { parse } from 'graphql';
 import { injectDirectives } from './inject-directives.js';
+
+type RouterConfig = {
+  engineConfig: {
+    datasourceConfigurations: {
+      id: string;
+      customGraphql?: {
+        federation?: {
+          serviceSdl: string;
+        };
+      };
+    }[];
+  };
+  subgraphs: {
+    id: string;
+    name: string;
+    routingUrl: string;
+  }[];
+  version: string;
+};
 
 /**
  * Extract and compose subgraph schemas
  */
 export const parseConfig = (config: string) => {
-  const routerConfig = RouterConfig.fromJsonString(config, {
-    ignoreUnknownFields: true,
-  });
+  const routerConfig: RouterConfig = JSON.parse(config);
 
   if (!routerConfig.engineConfig) {
     console.error('Invalid router config. Engine config undefined.');

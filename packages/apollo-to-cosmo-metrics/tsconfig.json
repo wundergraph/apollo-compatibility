@@ -3,11 +3,8 @@
   "compilerOptions": {
     "types": ["node"],
     "baseUrl": ".",
-    "target": "ES2022",
-    "lib": ["es2022"],
-    "sourceMap": true,
     "outDir": "./dist",
-    "module": "ESNext"
+    "module": "commonjs"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

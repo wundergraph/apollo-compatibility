@@ -24,7 +24,6 @@
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
   "files": [
     "dist"
   ],
@@ -37,7 +36,6 @@
     "@apollo/composition": "^2.9.2",
     "@apollo/gateway": "^2.9.2",
     "@wundergraph/composition": "^0.29.0",
-    "@wundergraph/cosmo-connect": "^0.84.0",
     "axios": "^1.7.7",
     "axios-retry": "^4.5.0",
     "graphql": "^16.9.0",
