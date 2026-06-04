@@ -19,13 +19,14 @@ jobs:
     # https://docs.npmjs.com/generating-provenance-statements#publishing-packages-with-provenance-via-github-actions
     permissions:
       id-token: write
+      contents: write
+      actions: write
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_PAT_TOKEN }}
 
       - uses: ./.github/actions/node
 
@@ -47,5 +48,5 @@ jobs:
           pnpm whoami
           pnpm release
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
